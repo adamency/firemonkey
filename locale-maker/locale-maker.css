@@ -1,8 +1,8 @@
 ﻿/* ----- General ----- */
 :root, body.dark {
   --bg: #000;
-  --border: #777; 
-  --color: #fff;  
+  --border: #777;
+  --color: #fff;
   --hover: #888;
   --shadow: #fff8;
   --btn-bg: #666;
@@ -10,7 +10,7 @@
   --bg2: #777;
   --bg3: #999;
   --bg-even: #444;
-  --bg-odd: #555; 
+  --bg-odd: #555;
   --img-filter: invert(1) grayscale(1);
   --focus: #345;
   --valid: #200;
@@ -20,7 +20,7 @@
   :root {
     --bg: #fff;
     --border: #ddd;
-    --color: #000;  
+    --color: #000;
     --hover: #eee;
     --shadow: #0004;
     --btn-bg: #f9f9fa;
@@ -32,7 +32,7 @@
     --img-filter: none;
     --focus: #def8;
     --valid: #fff5f5;
-  }  
+  }
 }
 
 body {

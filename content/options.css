@@ -50,7 +50,7 @@ aside {
 
 .list {
   padding: 0.3em 0.5em;
-  background: var(--bg2);
+  background: var(--hover);
   text-align: center;
 }
 
@@ -254,21 +254,17 @@ section.script {
 }
 
 .menu > button {
-  color: inherit;
   background-color: transparent;
   padding: 0.4em 0.6em;
   font-size: 0.8em;
-  text-align: center;
   border: 0;
-  transition: 0.5s;
-  cursor: pointer;
   min-width: 6em;
   white-space: nowrap;
   outline: 0;
 }
 
 .menu > button:hover {
-  background: var(--hover);
+  background-color: var(--hover);
 }
 
 .menu > button[data-i18n^="new"] {
