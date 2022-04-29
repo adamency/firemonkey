@@ -194,7 +194,7 @@ class Script {
         }
 
         // check script storage
-        if (newValue.storage !== oldValuestorage && id === this.box.id) {
+        if (newValue.storage !== oldValue.storage && id === this.box.id) {
           this.storage.value = Object.keys(pref[id].storage).length ? JSON.stringify(pref[id].storage, null, 2) : '';
         }
       });

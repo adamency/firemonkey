@@ -2,8 +2,8 @@ Manifest-Version: 1.0
 
 Name: manifest.json
 Digest-Algorithms: SHA1 SHA256
-SHA1-Digest: SDkcQv8KrNCQ7QMO4UXWnMZjRjU=
-SHA256-Digest: ys/uqCqJleH9Bo6u4cYSNn1a+WYizmyYxXUpuQcsc2M=
+SHA1-Digest: rmNPIK5+x1O/updLkt8tmCghGo0=
+SHA256-Digest: 3elM/1SoLz6zEDQWHYfWbONTjLAnZ3WgbeW7ZgNUoAc=
 
 Name: _locales/bg/messages.json
 Digest-Algorithms: SHA1 SHA256
@@ -42,13 +42,13 @@ SHA256-Digest: RpCrY+HMfwpcxo6NQifn6z9+/4Z1T30DKaYcNeaZx8s=
 
 Name: content/about.html
 Digest-Algorithms: SHA1 SHA256
-SHA1-Digest: v8bZnpOOzhrpPzPKCsbQFT1U8WI=
-SHA256-Digest: RmCLrTo7Hgh6cRYDz+EqHKcT1jGFGbyLw8y6miSS9DU=
+SHA1-Digest: HtuWHjYLPg3ExcgzdSdPzy0dVeg=
+SHA256-Digest: SVhlXuZWSKf1/zIf4D8H6rKBXDyDFHU04RGtRgfotJo=
 
 Name: content/api.js
 Digest-Algorithms: SHA1 SHA256
-SHA1-Digest: s1BEmoz+qhryIYRIIuyvyydHkFQ=
-SHA256-Digest: 45QVG3hnyZCEPqfb0iZ7A0JkEOcTj+GRt4H49ACSWTw=
+SHA1-Digest: ZXKPk9Jws6g9tvPDDMuASENgFCY=
+SHA256-Digest: Jq45dR5vkUNJP3nrUVBw5yCDwhicliiUuaOTEn4hW9k=
 
 Name: content/app.js
 Digest-Algorithms: SHA1 SHA256
@@ -92,8 +92,8 @@ SHA256-Digest: h6rMtmrl6KIWnWLOjauEPze2hunFP8oiiVcxXxlwT3A=
 
 Name: content/help.html
 Digest-Algorithms: SHA1 SHA256
-SHA1-Digest: cvX6T++ZSAxKhghwC+1GCPP0s3M=
-SHA256-Digest: qoQfGmPmfew6IjQ+HVcUfXwrOolLz0lx8pFtqT6GEgo=
+SHA1-Digest: K2ghPIdfN/rCMBHorv5oq/wJ6pE=
+SHA256-Digest: eJjmJxfDoAMqylDGNfEJU7AoR92Ci8xqvhhPOqAIgWI=
 
 Name: content/iframe.css
 Digest-Algorithms: SHA1 SHA256
@@ -122,8 +122,8 @@ SHA256-Digest: QLo4mAtrtD1ym/ruBFcn/1JwDIQi3a3qREvdR3gcpJA=
 
 Name: content/options.js
 Digest-Algorithms: SHA1 SHA256
-SHA1-Digest: 8E9n1dWRpRJOtvQ/VuCnCQXWE6M=
-SHA256-Digest: wQ6eBkjjaK4slYqJw9lNJ34pdoEuhgRqi7rqYnERypE=
+SHA1-Digest: gJcw/FAT0eBST3rVs9HGrAWUg50=
+SHA256-Digest: BFJchMg/Lt5QBfPtPAKQO3JH/bqJvE/SS2PHfiYjTrs=
 
 Name: content/popup.css
 Digest-Algorithms: SHA1 SHA256
@@ -792,13 +792,13 @@ SHA256-Digest: zvjiBG7niF+uu6/M8X7gDpEeJHVHVmdq5AtIMBQ5z6A=
 
 Name: locale-maker/locale-maker.html
 Digest-Algorithms: SHA1 SHA256
-SHA1-Digest: nfjgKAgUP5t2TON9rzjrpFUJi/I=
-SHA256-Digest: BakafXDda1LtGqkRpq/gc4xRiVIQfbdZMYFPh3xK4S8=
+SHA1-Digest: 4x1/MmhK10tz/mp2Tz8Tw5mCzns=
+SHA256-Digest: RD/C4OZPoFY+u/s5179hIVW+bQyUvHVmj4z3dDS8Dvo=
 
 Name: locale-maker/locale-maker.js
 Digest-Algorithms: SHA1 SHA256
-SHA1-Digest: qf5IVDRI6Wq3x34YK1C7gYJur5s=
-SHA256-Digest: 5g6YLQEPfV3kniF4mPGsX9bTiSvgKKXUZhGV/D2ePAA=
+SHA1-Digest: /JXdLBIB6vJhGb5wchgbGxWAAPo=
+SHA256-Digest: p0jpS0K5Pwnp+SElTKCqfePOt53FwleF99OUU86nVVM=
 
 Name: locale-maker/locale-maker.svg
 Digest-Algorithms: SHA1 SHA256

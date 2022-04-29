@@ -2281,8 +2281,8 @@ style.<span class="property">textContent</span> = <span class="string">`... css 
 
     <precaption>xmlHttpRequest from Page Context</precaption>
 <pre>
-<span class="keyword">const</span> xhr = <span class="keyword">new</span> <span class="object">window</span>.wrappedJSObject.XMLHttpRequest();
-xhr.<span class="method">open</span>(<span class="string">'GET'</span>, <span class="string">'https://example.com/etc'</span>);
+<span class="keyword">const</span> xhr = <span class="keyword">new</span> <span class="object">window</span>.XMLHttpRequest();
+xhr.<span class="method">open</span>(<span class="string">'GET'</span>, <span class="string">'https://example.com/'</span>);
 xhr.withCredentials = <span class="keyword">true</span>;
 xhr.<span class="property">onload</span> = response =&gt; {
  <span class="property">console</span>.<span class="method">log</span>(response.<span class="property">responseText</span>);
@@ -2291,6 +2291,13 @@ xhr.<span class="property">onerror</span> = response =&gt; {
  <span class="property">console</span>.<span class="method">log</span>(`${response.<span class="property">status</span>}  ${response.<span class="property">statusText</span>}`);
 };
 xhr.send(<span class="keyword">null</span>);
+
+<span class="comment">// or fetch</span>
+<span class="object">window</span>.fetch(<span class="string">'https://example.com/'</span>, {
+  credentials: 'include'
+})
+.<span class="keyword">then</span>(response => response.json())
+.<span class="keyword">catch</span>(<span class="method">error</span> =&gt; <span class="property">console</span>.<span class="method">error</span>(<span class="method">error</span>.message));
 </pre>
 
 

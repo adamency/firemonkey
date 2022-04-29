@@ -1,4 +1,10 @@
 ﻿browser.userScripts.onBeforeScript.addListener(script => {
+  // --- global
+  // mapping to window object as a temporary workaround for 
+  // https://bugzilla.mozilla.org/show_bug.cgi?id=1715249
+//  script.global.eval(fetch = window.fetch);
+//  script.global.eval(XMLHttpRequest = window.XMLHttpRequest);
+  
   // --- globals
   const {name, resource, info, id = `_${name}`, injectInto, grantRemove,
     registerMenuCommand, requireRemote} = script.metadata; // set id as _name

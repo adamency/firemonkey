@@ -66,7 +66,7 @@ class LocaleMaker {
     // add select listener
     this.select.addEventListener('change', (e) => {
       if (!e.target.value) { return; }
-      this.footer.textContent = '';                           // reset
+      this.footer.textContent = '';                         // reset
       const lang = e.target.value;
       this.locales[lang] ? this.setLocale(this.locales[lang]) : this.notify(`"${lang}" is not available.`);
     });
@@ -77,7 +77,10 @@ class LocaleMaker {
     const docfrag = document.createDocumentFragment();
 
     Object.keys(data).forEach(item => {
-      if (item === 'extensionName') { return; }             // keep extension name
+      if (item === 'extensionName') { 
+        document.title += ' - ' + data[item].message;
+        return;                                             // keep extension name
+      }             
       const tr = this.trTemplate.cloneNode(true);
       tr.children[0].textContent = this.showSpecial(data[item].message);
       tr.children[1].children[0].id = item;
