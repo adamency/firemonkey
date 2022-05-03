@@ -101,6 +101,9 @@
   "stylish": {
     "message": "Установить стиль Stylish"
   },
+  "beautify": {
+    "message": "Beautify"
+  },
   "report": {
     "message": "Сообщить"
   },

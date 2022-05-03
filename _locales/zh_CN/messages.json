@@ -101,6 +101,9 @@
   "stylish": {
     "message": "安装 Stylish 样式"
   },
+  "beautify": {
+    "message": "Beautify"
+  },
   "report": {
     "message": "报告"
   },

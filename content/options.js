@@ -562,6 +562,7 @@ class Script {
       case 'delete|title': return this.deleteScript();
       case 'newJS': case 'newJS|title': return this.newScript('js');
       case 'newCSS': case 'newCSS|title': return this.newScript('css');
+      case 'beautify|title': return this.beautify();
       case 'saveTemplate': return this.saveTemplate();
       case 'export': return this.exportScript();
       case 'exportAll': return this.exportScriptAll();
@@ -600,6 +601,19 @@ class Script {
         this.cm.replaceSelection(this.cm.getSelection().toUpperCase());
         break;
     }
+  }
+
+  beautify() {
+    if (!this.cm) { return; }
+
+    const options = {
+      indent_size: this.cm.getOption('tabSize')
+    };
+
+    let text = this.cm.getValue();
+    text = this.box.dataset.type === 'js' ? js_beautify(text, options) :  css_beautify(text, options);
+    this.cm.setValue(text);
+    this.makeStats(text);
   }
 
   newScript(type) {

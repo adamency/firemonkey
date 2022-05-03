@@ -111,8 +111,6 @@
     <tr><th>uncommon @grant</th><td><code>GM_cookie</code>, <code>GM_getTab</code>, <code>GM_getTabs</code>, <code>GM_saveTab</code> <a href="#api" title="">&#x24d8;</a></td><td>55 / 63,435 (<b>0.08%</b>) scripts use these APIs</td></tr>
     <tr><th>uncommon @grant</th><td><code>window.close</code>, <code>window.focus</code>, <code>window.onurlchange</code> <a href="#api" title="">&#x24d8;</a></td><td>483 / 63,435 (<b>0.76%</b>) scripts use these APIs<br>Probably a lot less as there would be duplicates</td></tr>
     <tr><th>Content Security Policy (CSP)</th><td><code>unsafeWindow</code> or <code>page</code> context injection on pages with strict CSP that only work with <i>Tampermonkey</i> since <i>Tampermonkey</i> alters CSP <a href="#inject-into">&#x24d8;</a></td><td class="unknown"></td></tr>
-    <tr><th>new XMLHttpRequest()<br>fetch()</th><td>Due to a bug in Firefox <code>userScript</code> context <a href="#JavaScript-xmlHttpRequest-fetch">&#x24d8;</a></td><td class="unknown"></td></tr>
-
   </tbody>
 </table>
 
@@ -428,7 +426,7 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {<span class="property">color<
 
   <h3 id="import-export">Preferences: Import/Export</h3>
   <p>You can import/export Preferences (for backup or share) from/to a local file on your computer.</p>
-  <p class="note">Import is non-destructive. Click <b>Save</b> to apply the new settings.</p>
+  <p class="note">Import is non-destructive. Click <b>Save</b> to apply the changes.</p>
 
   <p>Since v2.25, import will over-write options and scripts with the same name but keeps other scripts.</p>
 
@@ -534,11 +532,11 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {<span class="property">color<
 
     <dt>&#x2611;&#xfe0f; Enable</dt>
     <dd>Enable/Disable the currently displaying Script/CSS</dd>
-      <dd class="note">Changes apply immediately without the need to SAVE</dd>
+    <dd class="note">Changes apply immediately without the need to <b>Save</b>.</dd>
 
     <dt>&#x2611;&#xfe0f; Auto-update</dt>
     <dd>Enable/Disable the Auto-Update of the currently displaying Script/CSS</dd>
-      <dd class="note">Changes apply immediately without the need to SAVE</dd>
+    <dd class="note">Changes apply immediately without the need to <b>Save</b>.</dd>
 
     <dt><img src="../image/bin.svg" alt=""> Delete</dt>
     <dd>Delete the currently displaying Script/CSS after confirmation</dd>
@@ -548,6 +546,10 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {<span class="property">color<
 
     <dt>&#x2795; <img src="../image/css.svg" alt=""></dt>
     <dd>Display a new CSS Template that you can edit and Save</dd>
+
+    <dt><img src="../lib/js-beautify/logo.svg" alt=""> Beautify</dt>
+    <dd>Beautify the code</dd>
+    <dd class="note">Beautify is non-destructive. Click <b>Save</b> to apply the changes.</dd>
 
     <dt>&#x1f5d2; Menu</dt>
     <dd>Display Lint Report with click-able lines to go to the corresponding line in the Script/CSS</dd>
@@ -2302,6 +2304,9 @@ xhr.send(<span class="keyword">null</span>);
 
 
   <h4 id="JavaScript-xmlHttpRequest-fetch">&#x2139;&#xfe0f; JavaScript xmlHttpRequest & fetch</h4>
+  
+  <p class="note">Mapped <code>fetch</code> & <code>XMLHttpRequest</code> to page <code>window</code> as a workaround in v2.53</p>
+  
   <p>Due to a bug in Firefox <code>userScript</code> context, CORS fails in JavaScript <code>new XMLHttpRequest()</code> & <code>fetch()</code>. Therefore the behaviour of <a href="https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Content_scripts#xhr_and_fetch" title="XHR and Fetch" target="_blank">JavaScript xmlHttpRequest & fetch</a> in GM|TM|VM will be somehow different.</p>
   <p>After liaising with Mozilla engineers, once the bug is fixed, userscripts will get the same origin as the web-page they are on.</p>
 

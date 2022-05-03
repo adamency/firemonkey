@@ -101,6 +101,9 @@
   "stylish": {
     "message": "Install Stylish Style"
   },
+  "beautify": {
+    "message": "Beautify"
+  },
   "report": {
     "message": "Report"
   },

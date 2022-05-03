@@ -267,8 +267,13 @@ section.script {
   background-color: var(--hover);
 }
 
-.menu > button[data-i18n^="new"] {
+.menu > button[data-i18n^="new"],
+.menu > button[data-i18n^="beautify"] {
   min-width: unset;
+}
+
+.menu > button[data-i18n^="beautify"] img {
+  width: 1.6em;
 }
 
 .menu > button img {

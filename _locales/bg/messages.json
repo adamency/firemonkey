@@ -101,6 +101,9 @@
   "stylish": {
     "message": "Инсталиране на стил на Stylish"
   },
+  "beautify": {
+    "message": "Beautify"
+  },
   "report": {
     "message": "Доклад"
   },
