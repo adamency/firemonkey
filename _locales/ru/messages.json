@@ -89,14 +89,14 @@
   "tabToSpaces": {
     "message": "Табуляция в пробелы"
   },
-  "trimTrailingSpaces": {
-    "message": "Обрезать конечные пробелы"
-  },
   "toUpperCase": {
     "message": "Выбранное в верхний регистр"
   },
   "toLowerCase": {
     "message": "Выбранное в нижний регистр"
+  },
+  "wrapIIFE": {
+    "message": "Wrap code in IIFE"
   },
   "stylish": {
     "message": "Установить стиль Stylish"
@@ -226,6 +226,9 @@
   },
   "saveOptions": {
     "message": "Сохранить"
+  },
+  "trimTrailingSpaces": {
+    "message": "Обрезать конечные пробелы"
   },
   "cmOptionsError": {
     "message": "Недопустимый JSON CodeMirror"

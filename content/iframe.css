@@ -139,6 +139,10 @@ dd sup, p sup {
   color: #05f;
 }
 
+del {
+  text-decoration: line-through wavy #f50;
+}
+
 /* ----- About ----- */
 .about dl {
   margin-left: initial;

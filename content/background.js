@@ -341,7 +341,7 @@ class ScriptRegister {
     script.js && pref.globalScriptExcludeMatches && options.excludeMatches.push(...pref.globalScriptExcludeMatches.split(/\s+/));
 
     // --- prepare for include/exclude
-    (script.includes[0] || script.excludes[0] || script.includeGlobs[0] || script.excludeGlobs[0]) &&
+    !script.matches[0] && (script.includes[0] || script.excludes[0] || script.includeGlobs[0] || script.excludeGlobs[0]) &&
         (options.matches = ['*://*/*', 'file:///*']);
     options.matches = [...new Set(options.matches)];        // remove duplicates
 
@@ -471,10 +471,17 @@ class ScriptRegister {
       }
 
       // --- unsafeWindow implementation & Regex include/exclude workaround
-      const code = (includes[0] || excludes[0] ? `if (!matchURL()) { throw ''; } ` : '') +
-                    (page ? '' : 'const unsafeWindow = window.wrappedJSObject;');
+      // Mapping to window object as a temporary workaround for
+      // https://bugzilla.mozilla.org/show_bug.cgi?id=1715249
+      const scriptGlobal =
+`const unsafeWindow = window.wrappedJSObject;
+fetch = window.fetch.bind(window);
+XMLHttpRequest = window.XMLHttpRequest;`;
 
-      code.trim() && options.js.push({code});
+      const code = ((includes[0] || excludes[0] ? `if (!matchURL()) { throw ''; }\n` : '') +
+                    (!page ? scriptGlobal : '')).trim();
+
+      code && options.js.push({code});
     }
 
     // --- add code
@@ -981,91 +988,14 @@ class Migrate {
     const m = 2.42;
     if (localStorage.getItem('migrate')*1 >= m) { return; }
 
-    // --- v1.31 migrate 2020-03-13
-    if (pref.hasOwnProperty('disableHighlight')) {
-      delete pref.disableHighlight;
-      await browser.storage.local.remove('disableHighlight');
+    // --- 2.42 2022-02-02
+    if (pref.hasOwnProperty('customCSS')) {
+      pref.customOptionsCSS = pref.customCSS;
+      delete pref.customCSS;
+      await browser.storage.local.remove('customCSS');
     }
 
-    // --- v2.0 migrate 2020-12-08
-    !localStorage.getItem('theme') && localStorage.getItem('dark') === 'true' && localStorage.setItem('theme', 'darcula');
-    localStorage.removeItem('syntax');
-
-    // --- v2.25 migrate 2021-05-08
-    if (pref.hasOwnProperty('content')) {
-      localStorage.removeItem('pinMenu');
-
-      // --- combined migration
-      // --- v2.25  migrate 2021-05-08
-      // --- v2.5   migrate 2020-12-14
-      // --- v2.0   migrate 2020-12-08
-      // --- v1.36  migrate 2020-05-25
-      const data = {
-        // --- extension related data
-        name: '',
-        author: '',
-        description: '',
-        updateURL: '',
-        version: '',
-
-        enabled: true,
-        autoUpdate: false,
-        userMeta: '',
-        antifeatures: [],
-        injectInto: '',
-        require: [],
-        requireRemote: [],
-        resource: {},
-        i18n: {
-          name: {},
-          description: {}
-        },
-        error: '',
-        storage: {},
-        grant: [],
-
-        // --- API related data
-        allFrames: false,
-        js: '',
-        css: '',
-        style: [],
-        matches: [],
-        excludeMatches: [],
-        includeGlobs: [],
-        excludeGlobs: [],
-        includes: [],
-        excludes: [],
-        container: [],
-        matchAboutBlank: false,
-        runAt: 'document_idle'
-      };
-
-      Object.keys(pref.content).forEach(item => {
-        // add & set to default if missing
-        Object.keys(data).forEach(key => pref.content[item].hasOwnProperty(key) || (pref.content[item][key] = data[key]));
-
-        // --- v1.36 migrate 2020-05-25
-        pref.content[item].require.forEach((lib, i) => {
-          switch (lib) {
-            case 'lib/jquery-1.12.4.min.jsm':     pref.content[item].require[i] = 'lib/jquery-1.jsm'; break;
-            case 'lib/jquery-2.2.4.min.jsm':      pref.content[item].require[i] = 'lib/jquery-2.jsm'; break;
-            case 'lib/jquery-3.4.1.min.jsm':      pref.content[item].require[i] = 'lib/jquery-3.jsm'; break;
-            case 'lib/jquery-ui-1.12.1.min.jsm':  pref.content[item].require[i] = 'lib/jquery-ui-1.jsm'; break;
-            case 'lib/bootstrap-4.4.1.min.jsm':   pref.content[item].require[i] = 'lib/bootstrap-4.jsm'; break;
-            case 'lib/moment-2.24.0.min.jsm':     pref.content[item].require[i] = 'lib/moment-2.jsm'; break;
-            case 'lib/underscore-1.9.2.min.jsm':  pref.content[item].require[i] = 'lib/underscore-1.jsm'; break;
-          }
-        });
-
-        // --- v2.25 move script & storage
-        pref.content[item].storage = pref[`_${item}`] || {};  // combine with  script storage
-        pref[`_${item}`] = pref.content[item];                // move to pref from  pref.content
-      });
-      delete pref.content;
-      await browser.storage.local.remove('content');
-    }
-
-    // --- v2.35 migrate 2021-11-09
+    // --- 2.35 2021-11-09
     App.getIds().forEach(id => {
       const item = pref[id];
       const meta = [];
@@ -1091,13 +1021,6 @@ class Migrate {
       delete item.userExcludeMatches;
       delete item.userRunAt;
     });
-
-    // --- v2.42 migrate 2022-02-02
-    if (pref.hasOwnProperty('customCSS')) {
-      pref.customOptionsCSS = pref.customCSS;
-      delete pref.customCSS;
-      await browser.storage.local.remove('customCSS');
-    }
 
     // --- update database
     await browser.storage.local.set(pref);

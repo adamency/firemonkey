@@ -116,6 +116,19 @@
 
   <p class="note">Many userscripts declare <code>@grant</code> for GM APIs that they don't use.</p>
 
+
+  <h4>SyntaxError: return not in function</h4>
+  
+  <p><i>Greasemonkey</i>, <i>Tampermonkey</i> & <i>Violentmonkey</i>, wrap the userscripts in an anonymous IIFE (Immediately Invoked Function Expression) in order to limit its exposure to the page JavaScript. As a result, such JavaScript parse errors do not cause a problem but that created a situation where developers write JavaScript with syntax errors.</p>
+  
+  <p><a href="https://eslint.org/demo" target="_blank">ESLint</a> already displays the parse error for above.</p>
+
+  <p><a href="https://jshint.com/" target="_blank">JSHint</a> currently doesn't display the error, as posted to <a href="https://github.com/jshint/jshint/issues/3612" target="_blank">JavaScript: Mark return out of function</a>.</p>
+  
+  <p class="note">Use Wrap code in IIFE <a href="#IIFE">&#x24d8;</a></p>
+
+
+
 <table>
   <caption>Firefox Minimum Version</caption>
   <thead>
@@ -567,15 +580,15 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {<span class="property">color<
 
           <dt>➜ Tabs to Spaces</dt>
           <dd>Convert Tabs to spaces (2 per tab)</dd>
-<!--
-          <dt>✂ Trim Trailing Spaces</dt>
-          <dd>Remove trailing spaces</dd>
- -->
+
           <dt>&#x1f520; Selection to Uppercase</dt>
-          <dd>&nbsp;</dd>
+          <dd>Convert selection to uppercase characters</dd>
 
           <dt>&#x1f521; Selection to Lowercase</dt>
-          <dd>&nbsp;</dd>
+          <dd>Convert selection to lowercase characters</dd>
+
+          <dt id="IIFE">&#x1f6e0; Wrap code in IIFE</dt>
+          <dd>Wrap code in IIFE (Immediately Invoked Function Expression) to fix <code>SyntaxError: return not in function</code>.</dd>
 
           <dt>&#x1f464; User Metadata</dt>
           <dd>Persistent user metadata rules to add/amend/disable original Script & CSS metadata rules</dd>
@@ -844,7 +857,7 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {<span class="property">color<
     </tr>
   </thead>
   <tbody>
-    <tr><th>run-at</th><td>document-idle <span class="small">(JS)</span><br>document-start <span class="small">(CSS)</span></td><td>document-end</td><td>document-idle <a href="https://www.tampermonkey.net/documentation.php#_run_at" target="_blank">&#x24d8;</a></td><td>document-end</td></tr>
+    <tr><th>run-at</th><td>document-idle <span class="small">(JS)</span><br>document-start <span class="small">(CSS)</span></td><td>document-end</td><td>document-idle <a href="https://www.tampermonkey.net/documentation.php#_run_at" target="_blank">&#x24d8;</a> <a href="https://github.com/Tampermonkey/tampermonkey/issues/211" title="Make run-at document-start more reliable " target="_blank">&#x24d8;</a></td><td>document-end</td></tr>
     <tr><th>allFrames</th><td>false</td><td>true</td><td>true</td><td>true</td></tr>
     <tr><th>matchAboutBlank</th><td>false</td><td>@include  &nbsp;  about:blank</td><td class="unknown"></td><td class="unknown"></td></tr>
   </tbody>
@@ -1144,6 +1157,7 @@ element.<span class="property">innerHTML</span> = dom;
     <ul>
       <li><q>Add-ons must not relax web page security headers, such as the Content Security Policy.</q> (<a href="https://extensionworkshop.com/documentation/publish/add-on-policies/#development-practices" target="_blank">Add-on Policies</a>)</li>
       <li><q>It is also worth noting that the hack with removing the CSP can cause a conflict with other addons that use CSP to block content (like uBlock Origin)</q>. (<a href="https://github.com/violentmonkey/violentmonkey/issues/1001#issuecomment-643576816" title="[Firefox] Can't modify page properties on sites which use CSP" target="_blank">&#x24d8;</a>)</li>
+      <li><a href="https://github.com/Tampermonkey/tampermonkey/issues/1489" target="_blank">Tampermonkey should not modify CSP on websites where it is disabled</a></li>
     </ul>
 
   <h4>@antifeature</h4>
@@ -1209,18 +1223,35 @@ element.<span class="property">innerHTML</span> = dom;
 
 
   <h4>@include & @exclude</h4>
+  
   <p>They are the old and error-prone method of matching which has been superseded by <code>@match</code>/<code>@exclude-match</code>.</p>
   <p><i>FireMonkey</i> attempts to convert <code>@include/@exclude</code> to <code>@match/@exclude-match</code> <span class="small">(v2.35)</span>. If all are not converted, then all will be merged into <code>@includeGlob/@excludeGlob</code> (duplicates removed).</p>
   <p class="note"><code>@match/@exclude-match</code> performance is far more efficient.</p>
   <p class="warning">Due to matching order in Firefox/Chrome APIs, having mixed <code>@match/@exclude-match</code> with <code>@include/@exclude/includeGlob/excludeGlob</code> might have unexpected matched/unmatched results.</p>
 
 
+  <p class="warning"><code>include_globs</code> & <code>exclude_globs</code> are currently missing from manifest v3 <a href="https://developer.chrome.com/docs/extensions/reference/scripting/" target="_blank">chrome.scripting</a> API which could result in deprecation of <code>@include</code> & <code>@exclude</code> in userscript managers.</p>
+
   <blockquote>
-    <p>include_globs: Applied after matches to include only those URLs that also match this glob. Intended to emulate the @include Greasemonkey keyword.</p>
+    <h4>Tampermonkey</h4>
+    <p>eslint: userscripts/better-use-match - Using @include is potentially unsafe and may be obsolete in Manifest v3 in early 2023. Please switch to @match.</p>
+    
+    <p>ref: Tampermonkey lint.js & /_locales/en/messages.json</p>
 
-    <p>exclude_globs:  Applied after matches to exclude URLs that match this glob. Intended to emulate the @exclude Greasemonkey keyword.</p>
+    <cite><a href="https://stackoverflow.com/questions/71882835/convert-deprecated-include-with-regular-expression-to-match-in-userscript" target="_blank">Convert deprecated @include with regular expression to @match in userscript</a></cite>
+  </blockquote>
 
-    <cite><a href="https://developer.chrome.com/docs/extensions/mv2/content_scripts/#matchAndGlob" target="_blank">Exclude matches and globs</a></cite>
+
+  <blockquote>
+    <dl>
+      <dt>include_globs</dt>
+      <dd><i>Optional.</i> Applied after matches to include only those URLs that also match this glob. Intended to emulate the <code>@include</code> Greasemonkey keyword.</dd>
+      
+      <dt>exclude_globs</dt>
+      <dd><i>Optional.</i> Applied after matches to exclude URLs that match this glob. Intended to emulate the <code>@exclude</code> Greasemonkey keyword.</dd>
+    </dl>
+      
+    <cite><a href="https://developer.chrome.com/docs/extensions/mv3/content_scripts/#matchAndGlob" target="_blank">Exclude matches and globs</a></cite>
   </blockquote>
 
 
@@ -1235,6 +1266,8 @@ element.<span class="property">innerHTML</span> = dom;
 
     <cite><a href="https://violentmonkey.github.io/api/matching/" target="_blank">Violentmonkey Matching</a></cite>
   </blockquote>
+
+
 
   <h4 class="experimental">Regular Expression in @include & @exclude</h4>
   <p>Regular Expression support has been implemented for <code>@include/@exclude</code> <span class="small">(v2.5)</span>.</p>
@@ -1463,6 +1496,8 @@ element.<span class="property">innerHTML</span> = dom;
       <li>testpilot.firefox.com</li>
     </ul>
   </div>
+
+
 
 <h4 id="ftp">FTP &#x26a0;&#xfe0f; <span>(removed in Firefox 90)</span></h4>
 

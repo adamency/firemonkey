@@ -41,9 +41,9 @@
   "saveTemplate": { "message": "Save as Template" },
 
   "tabToSpaces": { "message": "Tabs to Spaces" },
-  "trimTrailingSpaces": { "message": "Trim Trailing Spaces" },
   "toUpperCase": { "message": "Selection to Uppercase" },
   "toLowerCase": { "message": "Selection to Lowercase" },
+  "wrapIIFE": { "message": "Wrap code in IIFE" },
 
   "stylish": { "message": "Install Stylish Style" },
   "beautify": { "message": "Beautify" },

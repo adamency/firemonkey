@@ -185,7 +185,7 @@ class Script {
 
         // enabled/disabled
         if (oldValue && newValue && newValue.enabled !== oldValue.enabled) {
-          const li = document.getElementById(id);
+          const li = document.querySelector(`[data-id="${id}"]`);
           li && li.classList.toggle('disabled', !newValue.enabled);
           if (id === this.box.id) {
             this.legend.classList.toggle('disabled', !newValue.enabled);
@@ -194,7 +194,7 @@ class Script {
         }
 
         // check script storage
-        if (newValue.storage !== oldValue.storage && id === this.box.id) {
+        if (newValue?.storage !== oldValue?.storage && id === this.box.id) {
           this.storage.value = Object.keys(pref[id].storage).length ? JSON.stringify(pref[id].storage, null, 2) : '';
         }
       });
@@ -568,10 +568,9 @@ class Script {
       case 'exportAll': return this.exportScriptAll();
 
       case 'tabToSpaces':
-//      case 'trimTrailingSpaces':
       case 'toLowerCase':
       case 'toUpperCase':
-      case 'includeToMatch':
+      case 'wrapIIFE':
         return this.edit(action);
     }
   }
@@ -586,19 +585,20 @@ class Script {
         this.cm.setValue(text);
         this.makeStats(text);
         break;
-/*
-      case 'trimTrailingSpaces':
-        text = this.cm.getValue().trimEnd().replace(/[ ]+(?=\r?\n)/g, '');
-        this.cm.setValue(text);
-        this.makeStats(text);
-        break;
-*/
+
       case 'toLowerCase':
         this.cm.replaceSelection(this.cm.getSelection().toLowerCase());
         break;
 
       case 'toUpperCase':
         this.cm.replaceSelection(this.cm.getSelection().toUpperCase());
+        break;
+
+      case 'wrapIIFE':
+        if (!this.legend.classList.contains('js')) { return; } // only for JS
+        text = ['(() => { ', this.cm.getValue(), '\n\n})();'].join('');
+        this.cm.setValue(text);
+        this.makeStats(text);
         break;
     }
   }
@@ -611,7 +611,7 @@ class Script {
     };
 
     let text = this.cm.getValue();
-    text = this.box.dataset.type === 'js' ? js_beautify(text, options) :  css_beautify(text, options);
+    text = this.legend.classList.contains('js') ? js_beautify(text, options) :  css_beautify(text, options);
     this.cm.setValue(text);
     this.makeStats(text);
   }
@@ -661,7 +661,7 @@ class Script {
 
     if (this.box.id) {                                      // refresh previously loaded content
       this.box.textContent = '';
-      document.getElementById(this.box.id).click();
+      document.querySelector(`[data-id="${this.box.id}"]`).click();
     }
   }
 
@@ -671,7 +671,7 @@ class Script {
     item.enabled || li.classList.add('disabled');
     item.error && li.classList.add('error');
     li.textContent = item.name;
-    li.id = `_${item.name}`;
+    li.dataset.id = `_${item.name}`;
     this.docfrag.appendChild(li);
     li.addEventListener('click', e => this.showScript(e));
   }
@@ -707,12 +707,12 @@ class Script {
     this.cm?.save();                                        // save CodeMirror to textarea
     if(this.unsavedChanges()) {
       li.classList.remove('on');
-      document.getElementById(box.id).classList.add('on');
+      box.id && document.querySelector(`[data-id="${box.id}"]`)?.classList.add('on');
       return;
     }
     this.cm?.toTextArea();                        // reset CodeMirror
 
-    const id = li.id;
+    const id = li.dataset.id;
     box.id = id;
     this.legend.textContent = pref[id].name;
     this.legend.className = li.classList.contains('js') ? 'js' : 'css';
@@ -903,7 +903,7 @@ class Script {
       const li = document.querySelector('aside li.on');
       li.classList.remove('error');                         // reset error
       li.textContent = data.name;
-      li.id = id;
+      li.dataset.id = id;
     }
 
     // --- check storage JS only
@@ -974,7 +974,7 @@ class Script {
 
     this.process();                                         // update page display
     this.box.value = '';                                    // clear box avoid unsavedChanges warning
-    document.getElementById(id)?.click();                   // reload the new script
+    document.querySelector(`[data-id="${id}"]`)?.click();   // reload the new script
   }
 
   // ----------------- Import Script -----------------------
@@ -1282,7 +1282,7 @@ class Nav {
         break;
 
       default:
-        document.getElementById(nav).click();
+        document.querySelector(`[data-id="${nav}"]`).click();
     }
   }
 }

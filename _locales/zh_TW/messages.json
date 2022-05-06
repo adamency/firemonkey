@@ -89,14 +89,14 @@
   "tabToSpaces": {
     "message": "Tabs to Spaces"
   },
-  "trimTrailingSpaces": {
-    "message": "Trim Trailing Spaces"
-  },
   "toUpperCase": {
     "message": "Selection to Uppercase"
   },
   "toLowerCase": {
     "message": "Selection to Lowercase"
+  },
+  "wrapIIFE": {
+    "message": "Wrap code in IIFE"
   },
   "stylish": {
     "message": "Install Stylish Style"
@@ -226,6 +226,9 @@
   },
   "saveOptions": {
     "message": "儲存"
+  },
+  "trimTrailingSpaces": {
+    "message": "Trim Trailing Spaces"
   },
   "cmOptionsError": {
     "message": "Invalid CodeMirror JSON"

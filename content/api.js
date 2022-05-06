@@ -1,13 +1,4 @@
 ﻿browser.userScripts.onBeforeScript.addListener(script => {
-/*
-  Ref: robwu (Rob Wu)
-  Mapping to window object as a temporary workaround for
-  https://bugzilla.mozilla.org/show_bug.cgi?id=1715249
-  https://searchfox.org/mozilla-central/rev/a730b83206183bf097820c5780eef0d5e4103b9d/toolkit/components/extensions/ExtensionContent.jsm#854-872
-*/
-  script.global.eval('fetch = window.fetch.bind(window);');
-  script.global.eval('XMLHttpRequest = window.XMLHttpRequest;');
-
   // --- globals
   const {name, resource, info, id = `_${name}`, injectInto, grantRemove,
     registerMenuCommand, requireRemote} = script.metadata;  // set id as _name

@@ -89,14 +89,14 @@
   "tabToSpaces": {
     "message": "Tabs omzetten in spaties"
   },
-  "trimTrailingSpaces": {
-    "message": "Witruimtes aan einde inkorten"
-  },
   "toUpperCase": {
     "message": "Selectie omzetten naar hoofdletters"
   },
   "toLowerCase": {
     "message": "Selectie omzetten naar kleine letters"
+  },
+  "wrapIIFE": {
+    "message": "Wrap code in IIFE"
   },
   "stylish": {
     "message": "Stylish-stijl installeren"
@@ -226,6 +226,9 @@
   },
   "saveOptions": {
     "message": "Opslaan"
+  },
+  "trimTrailingSpaces": {
+    "message": "Witruimtes aan einde inkorten"
   },
   "cmOptionsError": {
     "message": "Ongeldige CodeMirror-json"

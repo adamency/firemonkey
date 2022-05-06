@@ -89,14 +89,14 @@
   "tabToSpaces": {
     "message": "Tabs para Espaços"
   },
-  "trimTrailingSpaces": {
-    "message": "Remover Espaços Extras"
-  },
   "toUpperCase": {
     "message": "Seleção em Maiúsculas"
   },
   "toLowerCase": {
     "message": "Seleção em Minúsculas"
+  },
+  "wrapIIFE": {
+    "message": "Wrap code in IIFE"
   },
   "stylish": {
     "message": "Instalar Estilo"
@@ -226,6 +226,9 @@
   },
   "saveOptions": {
     "message": "Salvar"
+  },
+  "trimTrailingSpaces": {
+    "message": "Remover Espaços Extras"
   },
   "cmOptionsError": {
     "message": "JSON inválido para o CodeMirror."
