@@ -805,7 +805,7 @@ class Script {
 
     const deleted = [];
     multi.forEach(item => {
-      const id = item.id;
+      const id = item.dataset.id;
       item.remove();                                        // remove from menu list
       delete pref[id];
       deleted.push(id);

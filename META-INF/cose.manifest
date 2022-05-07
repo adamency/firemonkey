@@ -2,8 +2,8 @@ Manifest-Version: 1.0
 
 Name: manifest.json
 Digest-Algorithms: SHA1 SHA256
-SHA1-Digest: SBS8/BpuHFxe3UxJaCBjVP1nyHE=
-SHA256-Digest: VoCRAmYNbIjFi+yeVgn0n3F0QQRF1mZDz2fm5jEqSYY=
+SHA1-Digest: l0eL9E2orzPQVjaRNPOqQRdiCYs=
+SHA256-Digest: yCECZWJBx69/1yjFKpYOLjPH5rfJbd8MynW101V/qRI=
 
 Name: _locales/bg/messages.json
 Digest-Algorithms: SHA1 SHA256
@@ -42,13 +42,13 @@ SHA256-Digest: 0SAYwljtUT+71oSodncU7OVgEORLAc+TgStTmKIBhpc=
 
 Name: content/about.html
 Digest-Algorithms: SHA1 SHA256
-SHA1-Digest: zpm1jrJ1424V1la589zsPbeQ8ko=
-SHA256-Digest: dTIrYIZlqU5m1xSkU1JkiB4CdSfAtwqJa7Y06KMXrqQ=
+SHA1-Digest: MlUekE7O5q+Qf6xLSymumW8qIFU=
+SHA256-Digest: XNpHVQ4pj1Uvu5VCM8wsmDC/FDm/y0N1wTAYdzEeEO0=
 
 Name: content/api.js
 Digest-Algorithms: SHA1 SHA256
-SHA1-Digest: mPS5xmwtgDwdkw8JKxjdKPziDDs=
-SHA256-Digest: Ra/eQa8bKeQgSc9h9kH3VRsryR1aLDALhwhobCFGSNc=
+SHA1-Digest: vrH/+HSOzbE1g/x0ted4DMkiOf0=
+SHA256-Digest: fXBkJnthm1/GW5skB6TaoQ+sAw6JotRmWUH96lIoRcE=
 
 Name: content/app.js
 Digest-Algorithms: SHA1 SHA256
@@ -122,8 +122,8 @@ SHA256-Digest: Bc7/sque9nVqmfOLwON2hG61aCAOjovLjxheTXMOYIk=
 
 Name: content/options.js
 Digest-Algorithms: SHA1 SHA256
-SHA1-Digest: UTeeI0SLzhQONRjv6xyE5dlrvWM=
-SHA256-Digest: s0vdTh7yS1B33geLJfxzBOIcQwFZb7ijndEo9MzjkTM=
+SHA1-Digest: 29MFRxy2Ggbvazuo1kOICmh9v10=
+SHA256-Digest: yoYfVOEogaPEezW5T5mDT3JadhO6gjK/GV6IECM9ASs=
 
 Name: content/popup.css
 Digest-Algorithms: SHA1 SHA256
