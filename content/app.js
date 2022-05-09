@@ -177,26 +177,24 @@ class Meta {                                                // bg options
       require: [],
       requireRemote: [],
       resource: {},
-      i18n: {
-        name: {},
-        description: {}
-      },
       error: '',                                            // reset error on save
       storage: {},
       grant: [],
+      style: [],
+      includes: [],
+      excludes: [],
+      container: [],
+      userVar: {},
+      i18n: { name: {}, description: {} },
 
       // --- API related data
       allFrames: false,
       js: js ? str : '',
       css: !js ? str.replace(/[\u200b-\u200d\ufeff]/g, '') : '', // avoid CSS parse error on invisible characters
-      style: [],
       matches: [],
       excludeMatches: [],
       includeGlobs: [],
       excludeGlobs: [],
-      includes: [],
-      excludes: [],
-      container: [],
       matchAboutBlank: false,
       runAt: !js ? 'document_start' : 'document_idle'  // "document_start" "document_end" "document_idle" (default)
     };
@@ -260,6 +258,22 @@ class Meta {                                                // bg options
           value = '';                                       // no more processing
           break;
 
+        /// --- var
+        case 'var':
+          const [, type, name, label, valueString] = value.match(/^(\S+)\s+(\S+)+\s+('[^']+'|"[^"]+"|\S+)\s+(.+)$/) || [];
+          value = '';                                       // no more processing
+          if (!type || !valueString.trim()) { break; }
+
+          const [user, val] = this.getValue(type, valueString);
+          if (typeof user === 'undefined') { break; }
+
+          data.userVar[name] = {
+            type,
+            label: label.replace(/^('|")(.+)(\1)$/, '$2'),
+            value: val,
+            user,
+          }
+          break;
 
         // --- add @require
         case 'require':
@@ -405,6 +419,10 @@ class Meta {                                                // bg options
     if (pref[id]) {
       ['enabled', 'autoUpdate', 'userMeta', 'storage'].forEach(item => data[item] = pref[id][item]);
       !data.updateURL && (data.updateURL = pref[id].updateURL);
+
+      // --- userVar
+      Object.keys(data.userVar).forEach(item =>
+        pref[id].userVar?.[item]?.hasOwnProperty('usr') && (data.userVar[item].usr = pref[id].userVar[item].usr));
     }
 
     // this.enable etc are defined in options.js but not from background.js
@@ -412,6 +430,15 @@ class Meta {                                                // bg options
       data.enabled = this.enable.checked;
       data.autoUpdate = this.autoUpdate.checked;
       data.userMeta = this.userMeta.value;
+
+      // --- userVar
+      document.querySelectorAll('.userVar input, .userVar select').forEach(item => {
+        const id = item.dataset.id;
+        if (!data.userVar[id]) { return; }                  // skip
+        // boolean | number | string
+        const val = item.type === 'checkbox' ? item.checked : Number.isNaN(item.value*1) ? item.value : item.value*1;
+        data.userVar[id].user = val;
+      });
     }
 
     // ------------- User Metadata -------------------------
@@ -499,6 +526,38 @@ class Meta {                                                // bg options
     Object.keys(data).forEach(item => Array.isArray(data[item]) && data[item].length > 1 && (data[item] = [...new Set(data[item])]));
 
     return data;
+  }
+
+  static getValue(type, str) {
+    let jp, def;
+    switch (type) {
+      case 'number':
+      case 'range':
+        jp = App.JSONparse(str);
+        if (!jp) { return []; }
+
+        return [jp[0], jp];
+
+      case 'select':
+        jp = App.JSONparse(str);
+        if (!jp) { return []; }
+
+        if (Array.isArray(jp)) {
+          def = jp.find(item => item.endsWith('*')) || jp[0];
+          return [def, jp];
+        }
+
+        const ky = Object.keys(jp);
+        def = ky.find(item => item.endsWith('*'));
+        return [def ? jp[def] : jp[ky[0]], jp];
+        break;
+
+      case 'checkbox':
+        return [['1', 'true'].includes(str), str];
+
+      default:
+        return [str, str];
+    }
   }
 
   static convert(inc, mtch, glob, js) {

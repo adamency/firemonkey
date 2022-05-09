@@ -349,7 +349,7 @@ class ScriptRegister {
     ['excludeMatches', 'includeGlobs', 'excludeGlobs'].forEach(item => !options[item][0] && delete options[item]);
 
     // --- add CSS & JS
-    const {name, require, requireRemote} = script;
+    const {name, require, requireRemote, userVar = {}} = script;
     const target = script.js ? 'js' : 'css';
     const js = target === 'js';
     const page = js && script.injectInto === 'page';
@@ -371,6 +371,15 @@ class ScriptRegister {
 
       // --- add @requireRemote
       requireRemote[0] && options.css.push({code: requireRemote.map(item => `@import '${item}';`).join('\n')});
+      
+      // --- add @var
+      const uv = Object.entries(userVar).map(([key, value]) => {
+        let val = value.user;
+        ['number', 'range'].includes(value.type) && value.value[4] && (val + value.value[4]);
+        value.type === 'select' && Array.isArray(value.value) && (val = val.replace(/\*$/, ''));
+        return  `  --${key}: ${val};`;
+      }).join('\n');
+      uv && options.css.push({code: `/* --- User Variables --- */\n\n:root {\n${uv}\n}`});
     }
 
     // ----- script only
@@ -410,6 +419,20 @@ class ScriptRegister {
         ));
       }
 
+      // --- add @var
+      const uv = Object.entries(userVar).map(([key, value]) => {
+        let val = value.user;
+        ['number', 'range'].includes(value.type) && value.value[4] && (val + value.value[4]);
+        value.type === 'select' && Array.isArray(value.value) && (val = val.replace(/\*$/, ''));
+        val = typeof val === 'string' ? JSON.stringify(val) : val;
+        return `const ${key} = ${val};`;
+      }).join('\n');
+      if (uv) {
+        let code = '/* --- User Variables --- */\n\n' + uv + sourceURL + encodeId + '.var.user.js';
+        page && (code = `GM.addScript(${JSON.stringify(code)})`);
+        options.js.push({code});
+      }
+      
       const {includes, excludes, grant = []} = script;
 
       // --- process grant

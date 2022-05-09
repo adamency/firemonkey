@@ -41,6 +41,9 @@
   "globalScriptExcludeMatchesDescription": {
     "message": "Uitsluitpatronen (één per regel). Scripts worden niet uitgevoerd als ze hiermee overeenkomen."
   },
+  "userVar": {
+    "message": "User Variables"
+  },
   "userMeta": {
     "message": "User Metadata"
   },

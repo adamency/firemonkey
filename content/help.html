@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>Help</title>
     <link rel="stylesheet" href="iframe.css">
-    <link rel="stylesheet" href="firemonkey.css">
+    <link rel="stylesheet" href="iframe-fm.css">
     <script type="module" src="iframe.js"></script>
   </head>
   <body>
@@ -118,13 +118,13 @@
 
 
   <h4>SyntaxError: return not in function</h4>
-  
+
   <p><i>Greasemonkey</i>, <i>Tampermonkey</i> & <i>Violentmonkey</i>, wrap the userscripts in an anonymous IIFE (Immediately Invoked Function Expression) in order to limit its exposure to the page JavaScript. As a result, such JavaScript parse errors do not cause a problem but that created a situation where developers write JavaScript with syntax errors.</p>
-  
+
   <p><a href="https://eslint.org/demo" target="_blank">ESLint</a> already displays the parse error for above.</p>
 
   <p><a href="https://jshint.com/" target="_blank">JSHint</a> currently doesn't display the error, as posted to <a href="https://github.com/jshint/jshint/issues/3612" target="_blank">JavaScript: Mark return out of function</a>.</p>
-  
+
   <p class="note">Use Wrap code in IIFE <a href="#IIFE">&#x24d8;</a></p>
 
 
@@ -564,6 +564,11 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {<span class="property">color<
     <dd>Beautify the code</dd>
     <dd class="note">Beautify is non-destructive. Click <b>Save</b> to apply the changes.</dd>
 
+    <dt><img src="../image/gear.svg" alt=""> User Variables</dt>
+    <dd>View/edit User Vasiables, if any</dd>
+    <dd class="note">Editing is non-destructive. Click <b>Save</b> to apply the changes.</dd>
+
+
     <dt>&#x1f5d2; Menu</dt>
     <dd>Display Lint Report with click-able lines to go to the corresponding line in the Script/CSS</dd>
 
@@ -826,6 +831,8 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {<span class="property">color<
     <tr><th>@supportURL</th>        <td class="pass"></td><td class="fail"></td><td class="pass"></td><td class="pass"></td></tr>
     <tr><th>@container</th>         <td class="pass">Firefox 97-98</td><td class="fail"></td><td class="fail"></td><td class="fail"></td></tr>
     <tr><th>@grant</th>             <td class="pass experimental">different</td><td class="pass"></td><td class="pass"></td><td class="pass"></td></tr>
+    <tr><th>@var</th>             <td class="pass experimental"></td><td class="fail"></td><td class="fail"></td><td class="fail"></td></tr>
+
 
     <tr><th>@namespace</th>         <td class="fail"></td><td class="pass"></td><td class="pass"></td><td class="pass"></td></tr>
     <tr><th>@icon</th>              <td class="fail"></td><td class="fail"></td><td class="pass"></td><td class="pass"></td></tr>
@@ -1160,6 +1167,96 @@ element.<span class="property">innerHTML</span> = dom;
       <li><a href="https://github.com/Tampermonkey/tampermonkey/issues/1489" target="_blank">Tampermonkey should not modify CSP on websites where it is disabled</a></li>
     </ul>
 
+
+  <h4 class="experimental">@var</h4>
+  <p>User configurable variables for userScript & userCSS</p>
+  <p>Values are saved according to JavaScript types e.g. <code>boolean</code> (not suitable for useCSS), <code>number</code>, & <code>string</code>. Number strings are converted to <code>number</code>. </p>
+
+  <dl class="var">
+    <dt>name</dt>
+    <dd>No white space</dd>
+
+    <dt>label</dt>
+    <dd>Must be quoted (<code>'</code> or <code>"</code>) if contains white spaces</dd>
+
+    <dt>type & value</dt>
+    <dd>Set configuration type interface and corresponding value
+      <dl>
+        <dt>text</dt>
+        <dd><input type="text" value="value"> Display a text input</dd>
+
+        <dt>number</dt>
+        <dd><input type="number" value="50" min="0" max="100"> Display a number input, valid JSON array of <code>[default, min, max, step, unit]</code></dd>
+        <dd>If <code>unit</code> is not included, value will be a plain <code>number</code>.</dd>
+
+        <dt>range</dt>
+        <dd><input type="range" min="0" max="100" value="50"> <output>50</output> Display a range input, valid JSON array of <code>[default, min, max, step, unit]</code></dd>
+        <dd>If <code>unit</code> is not included, value will be a plain <code>number</code>.</dd>
+
+        <dt>checkbox</dt>
+        <dd><input type="checkbox" checked> Display a checkbox input, value of <code>0/1</code> or <code>true/false</code>, converts to <code>true/false</code> (not suitable for useCSS)</dd>
+
+        <dt>color</dt>
+        <dd><input type="color" value="#ff7700"> Display a color input, value of 6-digit hex code</dd>
+
+        <dt>select</dt>
+        <dd><select>
+            <option>Label 1</option>
+            <option>Label 2</option>
+          </select>
+        Display a select element</dd>
+        <dd>Default option can be indicated by adding an asterisk * to the end of the key name, otherwise it will be the first option</dd>
+        <dd><ul>
+          <li>Valid JSON array of <code>["Arial", "Helvetica", "\"Times New Roman\"*"]</code></li>
+          <li>Valid JSON object of <code>{"Orange": "#ffa500", "Skyblue*": "#87ceeb"}</code></li>
+        </ul></dd>
+        <dd class="note">If the string requires quotes, it must be included in the value e.g. font names with spaces <code>"\"Times New Roman\""</code>.</dd>
+
+
+      </dl>
+    </dd>
+  </dl>
+
+
+<pre>
+<span class="comment">/* Do not include the keyword !important in the variable value */</span>
+
+<span class="comment">/* format (all on a single line) */</span>
+@var      type      name      label     value
+
+<span class="comment">/* implementation in userScript */</span>
+<span class="keyword">const</span> name = value;
+
+<span class="comment">/* implementation in userCSS */</span>
+:root {
+  --name: value;
+}
+
+<span class="comment">/* use in userCSS */</span>
+body {
+  color: var(--name);
+}
+
+
+<span class="comment">/* Example */</span>
+@var      text      fontSize    "Font size"                 2em
+@var      text      bgImg       "Bg image"                  url('http://example.com/bkgd.jpg')
+@var      text      border      Border                      1px solid gray
+@var      text      logoImg     "Logo image"                none
+@var      checkbox  enable      Enabled                     1
+@var      checkbox  sendEnable  "Send Enabled"              true
+@var      color     fontColor   "Font color"                #ff7700
+@var      number    imgOpacity  "Image opacity"             [0.5, 0, 1, 0.1]
+@var      range     imgHeight   "Max image height"          [50, 10, 200, 10, "px"]
+@var      select    fontName    "Font name"                 ["Arial", "Helvetica*", "\"Times New Roman\""]
+@var      select    headerBg    "header background color"   {"Orange": "#ffa500", "Skyblue*": "#87ceeb"}
+</pre>
+
+  <p>See Also: <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties" target="_blank">Using CSS custom properties (variables)</a></p>
+  
+
+
+
   <h4>@antifeature</h4>
   <p>Under-development feature on <i>GreasyFork</i> (<a href="https://github.com/JasonBarnabe/greasyfork/issues/604" title="Monetization disclosure" target="_blank">#604</a>) to mark possibly undesirable behaviour e.g. miners, ads etc.</p>
 
@@ -1223,7 +1320,7 @@ element.<span class="property">innerHTML</span> = dom;
 
 
   <h4>@include & @exclude</h4>
-  
+
   <p>They are the old and error-prone method of matching which has been superseded by <code>@match</code>/<code>@exclude-match</code>.</p>
   <p><i>FireMonkey</i> attempts to convert <code>@include/@exclude</code> to <code>@match/@exclude-match</code> <span class="small">(v2.35)</span>. If all are not converted, then all will be merged into <code>@includeGlob/@excludeGlob</code> (duplicates removed).</p>
   <p class="note"><code>@match/@exclude-match</code> performance is far more efficient.</p>
@@ -1235,7 +1332,7 @@ element.<span class="property">innerHTML</span> = dom;
   <blockquote>
     <h4>Tampermonkey</h4>
     <p>eslint: userscripts/better-use-match - Using @include is potentially unsafe and may be obsolete in Manifest v3 in early 2023. Please switch to @match.</p>
-    
+
     <p>ref: Tampermonkey lint.js & /_locales/en/messages.json</p>
 
     <cite><a href="https://stackoverflow.com/questions/71882835/convert-deprecated-include-with-regular-expression-to-match-in-userscript" target="_blank">Convert deprecated @include with regular expression to @match in userscript</a></cite>
@@ -1246,11 +1343,11 @@ element.<span class="property">innerHTML</span> = dom;
     <dl>
       <dt>include_globs</dt>
       <dd><i>Optional.</i> Applied after matches to include only those URLs that also match this glob. Intended to emulate the <code>@include</code> Greasemonkey keyword.</dd>
-      
+
       <dt>exclude_globs</dt>
       <dd><i>Optional.</i> Applied after matches to exclude URLs that match this glob. Intended to emulate the <code>@exclude</code> Greasemonkey keyword.</dd>
     </dl>
-      
+
     <cite><a href="https://developer.chrome.com/docs/extensions/mv3/content_scripts/#matchAndGlob" target="_blank">Exclude matches and globs</a></cite>
   </blockquote>
 
@@ -2339,9 +2436,9 @@ xhr.send(<span class="keyword">null</span>);
 
 
   <h4 id="JavaScript-xmlHttpRequest-fetch">&#x2139;&#xfe0f; JavaScript xmlHttpRequest & fetch</h4>
-  
+
   <p class="note">Mapped <code>fetch</code> & <code>XMLHttpRequest</code> to page <code>window</code> as a workaround in v2.53</p>
-  
+
   <p>Due to a bug in Firefox <code>userScript</code> context, CORS fails in JavaScript <code>new XMLHttpRequest()</code> & <code>fetch()</code>. Therefore the behaviour of <a href="https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Content_scripts#xhr_and_fetch" title="XHR and Fetch" target="_blank">JavaScript xmlHttpRequest & fetch</a> in GM|TM|VM will be somehow different.</p>
   <p>After liaising with Mozilla engineers, once the bug is fixed, userscripts will get the same origin as the web-page they are on.</p>
 
@@ -3701,7 +3798,7 @@ ReferenceError: abc is not defined[Learn More]                        1f0135df-f
     <li><a href="https://deepsource.io/blog/javascript-code-quality-best-practices/" target="_blank">JavaScript best practices to improve code quality </a></li>
     <li><a href="https://www.w3schools.com/js/js_best_practices.asp" target="_blank">JavaScript Best Practices</a></li>
     <li><a href="https://www.w3.org/wiki/JavaScript_best_practices" target="_blank">JavaScript best practices</a></li>
-    
+
   </ul>
 
 

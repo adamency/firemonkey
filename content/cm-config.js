@@ -103,7 +103,7 @@ class Config {
           '@excludeGlobs', '@matchAboutBlank', '@allFrames', '@noframes', '@require', '@resource',
           '@run-at', '@runAt', '@downloadURL', '@inject-into', '@compatible', '@container',
           '@homepage', '@homepageURL', '@website', '@source', '@grant',
-          '@support', '@supportURL'];
+          '@support', '@supportURL', '@var'];
 
     const unsupported = ['@namespace', '@icon', '@connect', '@unwrap', '@nocompat'];
 

@@ -36,6 +36,22 @@ table#api tbody td:last-of-type {
   margin-right: 1em;
 }
 
+.var li + li {
+  margin-top: 0.3em;
+}
+
+.var input,
+.var select {
+  width: 6em;
+  margin-top: 0.3em;
+  margin-right: 0.5em;
+}
+
+.var output {
+  vertical-align: top;
+  min-width: 2em;
+  display: inline-block;
+}
 /* ----- Light Theme for Help ----- */
 .comment { color: #090; }
 .keyword, .html { color: blue; }

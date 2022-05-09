@@ -41,6 +41,9 @@
   "globalScriptExcludeMatchesDescription": {
     "message": "Исключить совпадающие паттерны (по одному в строке), чтобы предотвратить выполнение всех скриптов на них"
   },
+  "userVar": {
+    "message": "User Variables"
+  },
   "userMeta": {
     "message": "Метаданные пользователя"
   },

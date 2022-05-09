@@ -41,6 +41,9 @@
   "globalScriptExcludeMatchesDescription": {
     "message": "Шаблоните (по един на ред) за изключване чрез съвпадение предотвратяват изпълнение на скриптовете."
   },
+  "userVar": {
+    "message": "User Variables"
+  },
   "userMeta": {
     "message": "Описателни данни"
   },

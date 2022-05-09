@@ -81,6 +81,9 @@ class Script {
     this.autoUpdate.addEventListener('change', () => this.toggleAutoUpdate());
     Meta.autoUpdate = this.autoUpdate;
 
+    // --- User Variables
+    this.userVar = document.querySelector('.userVar ul');
+
     // --- User Metadata
     this.userMeta = document.querySelector('#userMeta');
     this.userMeta.value = '';
@@ -737,8 +740,78 @@ class Script {
     this.storage.parentNode.style.display = pref[id].js ? 'list-item' : 'none';
     this.storage.value = Object.keys(pref[id].storage).length ? JSON.stringify(pref[id].storage, null, 2) : '';
 
+    // --- userVar
+    this.showUserVar(id);
+
     // --- CodeMirror
     this.setCodeMirror();
+  }
+
+  showUserVar(id) {
+    this.userVar.textContent = '';                          // reset
+    const tmp = this.liTemplate.cloneNode();
+    tmp.append(document.createElement('label'), document.createElement('input'));
+    const sel = document.createElement('select');
+    const output = document.createElement('output');
+
+    Object.entries(pref[id].userVar || {}).forEach(([key, value]) => {
+      if (!value.hasOwnProperty('user')) { return; }                          // skip
+      const li = tmp.cloneNode(true);
+      switch (value.type) {
+        case 'text':
+        case 'color':
+          li.children[0].textContent = value.label;
+          li.children[1].dataset.id = key;
+          li.children[1].type = value.type;
+          li.children[1].value = value.user;
+          break;
+
+        case 'checkbox':
+          li.children[0].textContent = value.label;
+          li.children[1].dataset.id = key;
+          li.children[1].type = value.type;
+          li.children[1].checked = value.user;
+          break;
+
+        case 'number':
+          li.children[0].textContent = value.label;
+          li.children[1].dataset.id = key;
+          li.children[1].type = value.type;
+          li.children[1].value = value.user;
+          li.children[1].min = value.value[1];
+          li.children[1].max = value.value[2];
+          li.children[1].step = value.value[3];
+          break;
+
+        case 'range':
+          li.children[0].after(output.cloneNode());
+          li.children[0].textContent = value.label;
+          li.children[1].textContent = value.user + (value.value[4] || '');
+          li.children[2].dataset.id = key;
+          li.children[2].type = value.type;
+          li.children[2].value = value.user;
+          li.children[2].min = value.value[1];
+          li.children[2].max = value.value[2];
+          li.children[2].step = value.value[3];
+          li.children[2].addEventListener('input',
+            e => li.children[1].textContent = e.target.value + (value.value[4] || ''));
+          break;
+
+        case 'select':
+          li.children[1].remove();
+          li.appendChild(sel.cloneNode());
+           li.children[0].textContent = value.label;
+          li.children[1].dataset.id = key;
+          // add option
+          Array.isArray(value.value) ?
+            value.value.forEach(item => li.children[1].appendChild(new Option(item.replace(/\*$/, ''), item))) :
+             Object.entries(value.value).forEach(([k, v]) => li.children[1].appendChild(new Option(k.replace(/\*$/, ''), v)));
+          li.children[1].value = value.user;
+          break;
+      }
+      this.docfrag.appendChild(li);
+    });
+    this.userVar.appendChild(this.docfrag);
   }
 
   noSpace(str) {
@@ -922,6 +995,9 @@ class Script {
 
     pref[id] = data;                                        // save to pref
     browser.storage.local.set({[id]: pref[id]});            // update saved pref
+
+    // --- userVar
+    this.showUserVar(id);
 
     // --- progress bar
     options.progressBar();

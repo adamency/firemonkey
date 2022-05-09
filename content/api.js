@@ -30,8 +30,8 @@
     }
 
     // ----- Script Storage
-    storageGet() {
-      return browser.storage.local.get(id).then((result = {}) => storage = result[id].storage);
+    async storageGet() {
+      await browser.storage.local.get(id).then((result = {}) => storage = result[id].storage);
     }
 
     storageChange(changes) {

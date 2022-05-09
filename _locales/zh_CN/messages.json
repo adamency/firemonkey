@@ -41,6 +41,9 @@
   "globalScriptExcludeMatchesDescription": {
     "message": "排除匹配模式（每行一个）阻止所有脚本在其上运行。"
   },
+  "userVar": {
+    "message": "User Variables"
+  },
   "userMeta": {
     "message": "User Metadata"
   },

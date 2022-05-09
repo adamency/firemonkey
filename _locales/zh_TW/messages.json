@@ -41,6 +41,9 @@
   "globalScriptExcludeMatchesDescription": {
     "message": "Exclude Match pattens (one per line) to prevent all scripts from running on them."
   },
+  "userVar": {
+    "message": "User Variables"
+  },
   "userMeta": {
     "message": "User Metadata"
   },

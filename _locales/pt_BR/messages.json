@@ -41,6 +41,9 @@
   "globalScriptExcludeMatchesDescription": {
     "message": "Padrões de exclusão (um por linha) em que todos os scripts serão desativados"
   },
+  "userVar": {
+    "message": "User Variables"
+  },
   "userMeta": {
     "message": "Metadados do Usuário"
   },
