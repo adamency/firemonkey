@@ -1,4 +1,4 @@
-﻿{
+{
   "extensionName": { "message": "FireMonkey" },
   "extensionDescription": { "message": "Super Lightweight User Script and Style Manager" },
 
@@ -21,6 +21,7 @@
   "globalScriptExcludeMatchesDescription": { "message": "Exclude Match pattens (one per line) to prevent all scripts from running on them" },
 
   "userVar": { "message": "User Variables" },
+  "reset": { "message": "Reset" },
   "userMeta": { "message": "User Metadata" },
   "storage": { "message": "Storage" },
   "storageError": { "message": "Storage value must be a valid JSON" },

@@ -1,4 +1,4 @@
-﻿export {pref, App, Meta, RemoteUpdate, CheckMatches};
+export {pref, App, Meta, RemoteUpdate, CheckMatches};
 
 // ----------------- Default Preference --------------------
 let pref = {
@@ -130,19 +130,12 @@ class App {
   }
 
   static JSONparse(str) {
-    try { return JSON.parse(str); } catch (e) { return null; }
+    try { return JSON.parse(str); }
+    catch (e) { return null; }
   }
 
   static getIds() {
     return Object.keys(pref).filter(item => item.startsWith('_'));
-  }
-
-  static allowedHost(url) {                                 // bg options
-    return  url.startsWith('https://greasyfork.org/scripts/') ||
-            url.startsWith('https://sleazyfork.org/scripts/') ||
-            url.startsWith('https://openuserjs.org/install/') ||
-            url.startsWith('https://userstyles.org/styles/') ||
-            url.startsWith('https://raw.githubusercontent.com/');
   }
 }
 App.android = navigator.userAgent.includes('Android');
@@ -185,6 +178,7 @@ class Meta {                                                // bg options
       excludes: [],
       container: [],
       userVar: {},
+      preprocessor: '',
       i18n: { name: {}, description: {} },
 
       // --- API related data
@@ -201,7 +195,16 @@ class Meta {                                                // bg options
 
     const lineRegex = /^[\s\/]*@([\w:-]+)(?:\s+(.+))?/;
 
-    metaData[2].split(/[\r\n]+/).forEach(item => {          // lines
+    // convert @var select multiline to single line
+    let mData = metaData[2].replace(/(@var\s+select\s+[^\n]+)(\{[^}]+\})/g, this.prepareSelect);
+
+    // convert @advanced dropdown to select
+    mData = mData.replace(/(@advanced\s+dropdown\s+[^\n]+)(\{[^}]+\})/g, this.prepareDropdown);
+
+    // convert @advanced image to select
+    mData = mData.replace(/(@advanced\s+image\s+[^\n]+)(\{[^}]+\})/g, this.prepareImage);
+
+    mData.split(/[\r\n]+/).forEach(item => {          // lines
       let [,prop, value = ''] = item.trim().match(lineRegex) || [];
       if (!prop) { return; }                                // continue to next
       switch (prop) {
@@ -258,8 +261,15 @@ class Meta {                                                // bg options
           value = '';                                       // no more processing
           break;
 
-        /// --- var
+        // --- var
+        case 'preprocessor':                                // only for CSS
+          if (js || !['uso', 'less', 'stylus'].includes(value)) {
+            value = '';
+          }
+          break;
+
         case 'var':
+        case 'advanced':
           const [, type, name, label, valueString] = value.match(/^(\S+)\s+(\S+)+\s+('[^']+'|"[^"]+"|\S+)\s+(.+)$/) || [];
           value = '';                                       // no more processing
           if (!type || !valueString.trim()) { break; }
@@ -379,7 +389,10 @@ class Meta {                                                // bg options
         if (st === -1 || end === -1) { return; }
 
         const rule = moz.substring(0, st).trim();
-        const css = moz.substring(st+1, end).trim();
+        let css = moz.substring(st+1, end).trim();
+
+        // process preprocessor
+        data.preprocessor && (css = this.preprocessor(css, data.preprocessor, data.userVar));
 
         const obj = {
           matches: [],
@@ -432,11 +445,15 @@ class Meta {                                                // bg options
       data.userMeta = this.userMeta.value;
 
       // --- userVar
-      document.querySelectorAll('.userVar input, .userVar select').forEach(item => {
+      !this.userVar.dataset.default && document.querySelectorAll('.userVar input, .userVar select').forEach(item => {
         const id = item.dataset.id;
-        if (!data.userVar[id]) { return; }                  // skip
-        // boolean | number | string
-        const val = item.type === 'checkbox' ? item.checked : Number.isNaN(item.value*1) ? item.value : item.value*1;
+        if (!data.userVar[id] || !item.value.trim()) { return; } // skip
+
+        // number | string
+        let val = item.type === 'checkbox' ? item.checked*1 : Number.isNaN(item.value*1) ? item.value : item.value*1;
+
+        // color may have opacity
+        item.dataset.opacity && console.log(val += item.dataset.opacity);
         data.userVar[id].user = val;
       });
     }
@@ -533,12 +550,16 @@ class Meta {                                                // bg options
     switch (type) {
       case 'number':
       case 'range':
-        jp = App.JSONparse(str);
+        jp = App.JSONparse(str) || App.JSONparse(str.replace(/'/g, '"')); // check if single quote object
         if (!jp) { return []; }
 
+        // sort unit to the end
+        jp.sort((a, b) => typeof a === 'string' && typeof b !== 'string');
         return [jp[0], jp];
 
       case 'select':
+      case 'dropdown':
+        case 'image':
         jp = App.JSONparse(str);
         if (!jp) { return []; }
 
@@ -558,6 +579,45 @@ class Meta {                                                // bg options
       default:
         return [str, str];
     }
+  }
+
+  static preprocessor(str, pp, userVar = {}) {
+    const re = {
+      less: (r) => new RegExp('@' + r + '\\b', 'g'),
+      stylus: (r) => new RegExp('\\b' + r + '\\b', 'g'),
+      uso: (r) => new RegExp('/\\*\\[\\[' + r + '\\]\\]\\*/', 'g'),
+    };
+
+    Object.keys(userVar).forEach(item => str = str.replace(re[pp](item), `var(--${item})`));
+    return str;
+  }
+
+  static prepareSelect(m, p1, p2) {
+    let jp = App.JSONparse(p2) || App.JSONparse(p2.replace(/'/g, '"')); // check if single quote object
+    return jp ? p1 + JSON.stringify(jp) : '';               // remove if not valid JSON
+  }
+
+  static prepareDropdown(m, p1, p2) {
+    const obj ={};
+    const opt = p2.slice(1, -1).trim().split(/\s+EOT;/);
+    opt.forEach(item => {
+      if (!item.trim()) { return; }
+      const [, id, label, valueString] = item.match(/(\S+)\s+"([^<]+)"\s+<<<EOT\s*([\S\s]+)/);
+      label && (obj[label] = valueString);
+    });
+    return Object.keys(obj)[0] ? p1 + JSON.stringify(obj) : '';
+  }
+
+  static prepareImage(m, p1, p2) {
+    const obj ={};
+    const opt = p2.slice(1, -1).trim().split(/[\r\n]+/);
+    opt.forEach(item => {
+      item = item.trim();
+      if (!item) { return; }
+      const [, id, label, valueString] = item.match(/(\S+)\s+"(.+)"\s+"(.+)"/);
+      label && (obj[label] = valueString);
+    });
+    return Object.keys(obj)[0] ? p1 + JSON.stringify(obj) : '';
   }
 
   static convert(inc, mtch, glob, js) {

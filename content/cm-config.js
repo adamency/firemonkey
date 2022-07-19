@@ -1,4 +1,4 @@
-﻿'use strict';
+'use strict';
 
 class Config {
 
@@ -102,8 +102,8 @@ class Config {
           '@matches', '@include', '@exclude', '@exclude-match', '@excludeMatches', '@includeGlobs',
           '@excludeGlobs', '@matchAboutBlank', '@allFrames', '@noframes', '@require', '@resource',
           '@run-at', '@runAt', '@downloadURL', '@inject-into', '@compatible', '@container',
-          '@homepage', '@homepageURL', '@website', '@source', '@grant',
-          '@support', '@supportURL', '@var'];
+          '@homepage', '@homepageURL', '@website', '@source', '@grant', '@support', '@supportURL',
+          '@var', '@advanced', '@preprocessor'];
 
     const unsupported = ['@namespace', '@icon', '@connect', '@unwrap', '@nocompat'];
 
@@ -187,8 +187,8 @@ class Config {
           break;
 
         case /^(GM(\.|_)(getTabs?|saveTab)$)/.test(value):
-        case value.startsWith('window.'): // window.close | window.focus | window.onurlchange 
-        case value === 'GM_getResourceURL': 
+        case value.startsWith('window.'): // window.close | window.focus | window.onurlchange
+        case value === 'GM_getResourceURL':
           message = `${value} is not supported.`;
           break;
       }

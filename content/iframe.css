@@ -1,4 +1,4 @@
-﻿@import 'default.css';
+@import 'default.css';
 
 /* ----- Dark Theme ----- */
 :root, body.dark {
@@ -179,13 +179,13 @@ article li img {
 }
 
 a[href^="http"]::after {
-  content: '\1f517';
+  content: '🔗';
   margin-left: 0.3em;
   font-size: 0.7em;
 }
 
 a[href^="https://bugzilla.mozilla.org/show_bug.cgi?id="]::before {
-  content: '\1f41e';
+  content: '🐞';
   margin-right: 0.3em;
 }
 
@@ -339,6 +339,7 @@ pre {
   background-color: var(--pre);
   border-left: 4px solid #48b;
   padding: 1em;
+  font-size: 1.2em;
 }
 
 pre code {
@@ -436,6 +437,10 @@ blockquote::after {
   content: '\201d';
   bottom: -0.5em;
   right: 0.5em;
+}
+
+td blockquote {
+  margin: 0.5em;
 }
 
 cite {
@@ -588,6 +593,10 @@ td .pass, td .fail,
 td.pass span, td.fail span {
  font-family: monospace;
  font-size: initial;
+}
+
+td.top {
+  vertical-align: top;
 }
 
 th span, .small {

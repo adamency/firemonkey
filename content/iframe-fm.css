@@ -1,4 +1,4 @@
-﻿/* ----- FireMonkey ----- */
+/* ----- FireMonkey ----- */
 table#api tbody td:last-of-type {
   color: var(--dim);
   text-align: right;
@@ -45,6 +45,10 @@ table#api tbody td:last-of-type {
   width: 6em;
   margin-top: 0.3em;
   margin-right: 0.5em;
+}
+
+input[type="color"] {
+  border: 0;
 }
 
 .var output {

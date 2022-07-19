@@ -1,4 +1,4 @@
-﻿import {pref, App, Meta, RemoteUpdate, CheckMatches} from './app.js';
+import {pref, App, Meta, RemoteUpdate, CheckMatches} from './app.js';
 const RU = new RemoteUpdate();
 
 // ----------------- Process Preference --------------------
@@ -326,7 +326,7 @@ class ScriptRegister {
     // --- stop if script is not enabled or no mandatory matches
     if (!script.enabled || (!script.matches[0] && !script.includes[0] && !script.includeGlobs[0] && !script.style[0])) { return; }
 
-    // --- preppare script options
+    // --- prepare script options
     const options = {
       matches: script.matches,
       excludeMatches: script.excludeMatches,
@@ -363,6 +363,7 @@ class ScriptRegister {
         (options.cookieStoreId = script.container.map(item => `firefox-${item}`));
 
     // ----- CSS only
+    let userVarCode = '';                                   // for script.style
     if (!js) {
       // --- add @require
       require.forEach(item =>
@@ -370,8 +371,9 @@ class ScriptRegister {
       );
 
       // --- add @requireRemote
-      requireRemote[0] && options.css.push({code: requireRemote.map(item => `@import '${item}';`).join('\n')});
-      
+      requireRemote[0] && options.css.push({code:
+        `/* --- ${name}.user.css --- */\n\n` + requireRemote.map(item => `@import '${item}';`).join('\n')});
+
       // --- add @var
       const uv = Object.entries(userVar).map(([key, value]) => {
         let val = value.user;
@@ -379,7 +381,13 @@ class ScriptRegister {
         value.type === 'select' && Array.isArray(value.value) && (val = val.replace(/\*$/, ''));
         return  `  --${key}: ${val};`;
       }).join('\n');
-      uv && options.css.push({code: `/* --- User Variables --- */\n\n:root {\n${uv}\n}`});
+      if (uv) {
+        const code = `/* --- ${name}.user.css --- */\n/* --- User Variables --- */\n\n:root {\n${uv}\n}`;
+        script.style[0] ? userVarCode = code : options.css.push({code});
+      }
+
+      // --- add code
+      !script.style[0] && options.css.push({code: Meta.prepare(script.css)});
     }
 
     // ----- script only
@@ -413,7 +421,7 @@ class ScriptRegister {
             url.startsWith('/lib/') && (url = url.slice(1, -1));
             code += sourceURL + encodeURI(url);
             page && (code = `GM.addScript(${JSON.stringify(code)})`);
-            options[target].push({code});
+            options.js.push({code});
           })
           .catch(() => {})
         ));
@@ -432,7 +440,7 @@ class ScriptRegister {
         page && (code = `GM.addScript(${JSON.stringify(code)})`);
         options.js.push({code});
       }
-      
+
       const {includes, excludes, grant = []} = script;
 
       // --- process grant
@@ -484,8 +492,10 @@ class ScriptRegister {
 
       // --- process inject-into page context
       if (page) {
-        const str = `((unsafeWindow, GM, GM_info = GM.info) => {(() => { ${script.js}
+        const str =
+`((unsafeWindow, GM, GM_info = GM.info) => {(() => { ${script.js}
 })();})(window, ${JSON.stringify({info:options.scriptMetadata.info})});`;
+
         script.js = `GM.addScript(${JSON.stringify(str)});`;
       }
       else if (['GM_getValue', 'GM_setValue', 'GM_listValues', 'GM_deleteValue'].some(item => grantKeep.includes(item))) {
@@ -496,25 +506,22 @@ class ScriptRegister {
       // --- unsafeWindow implementation & Regex include/exclude workaround
       // Mapping to window object as a temporary workaround for
       // https://bugzilla.mozilla.org/show_bug.cgi?id=1715249
-      const scriptGlobal =
-`const unsafeWindow = window.wrappedJSObject;
-fetch = window.fetch.bind(window);
-XMLHttpRequest = window.XMLHttpRequest;`;
+      !page && options.js.push({file: '/content/api-plus.js'});
 
-      const code = ((includes[0] || excludes[0] ? `if (!matchURL()) { throw ''; }\n` : '') +
-                    (!page ? scriptGlobal : '')).trim();
+      // --- unsafeWindow implementation & Regex include/exclude workaround
+      (includes[0] || excludes[0]) && options.js.push({code: `if (!matchURL()) { throw ''; }`});
 
-      code && options.js.push({code});
+      // --- add code
+      options.js.push({code: Meta.prepare(script.js)});
     }
 
-    // --- add code
-    options[target].push({code: Meta.prepare(script[target])});
-
+    // ---
     if (script.style[0]) {
       // --- UserStyle Multi-segment Process
       script.style.forEach((item, i) => {
         options.matches = item.matches;
-        options.css = [{code: item.css}];
+        userVarCode && options.css.push({code: userVarCode});
+        options.css.push({code: item.css});
         this.register(id + 'style' + i, options, id);
       });
     }
@@ -774,7 +781,7 @@ class Installer {
           !RU.higherVersion(data.version, pref[id].version)) { return; }
 
     // --- check for Web Install, set install URL
-    if (App.allowedHost(updateURL)) {
+    if (!data.updateURL && !updateURL.startsWith('file:///')) {
       data.updateURL = updateURL;
       data.autoUpdate = true;
     }
@@ -841,9 +848,16 @@ class API {
     const storeId = sender.tab.cookieStoreId !== 'firefox-default' && sender.tab.cookieStoreId;
 
     switch (api) {
-      case 'log':                                           // internal use only (not GM API)
+      // --- internal use only (not GM API)
+      case 'log':
         return App.log(name, e.message, e.type);
 
+      case 'install':
+        RU.getScript({updateURL: e.updateURL, name});
+        return;
+
+
+      // --- from script api
       case 'getValue':
         return Promise.resolve(pref[id].storage.hasOwnProperty(e.key) ? pref[id].storage[e.key] : e.defaultValue);
 
@@ -918,9 +932,9 @@ class API {
   }
 
   async addCookie(url, headers, storeId) {
-    // add contexual cookies, only in container/incognito
+    // add contextual cookies, only in container/incognito
     // https://bugzilla.mozilla.org/show_bug.cgi?id=1670278
-    // if privacy.firstparty.isolate = true
+    // if privacy. firstparty.isolate = true
     // Error: First-Party Isolation is enabled, but the required 'firstPartyDomain' attribute was not set.
     const cookies = await browser.cookies.getAll({url, storeId});
     const str = cookies && cookies.map(item => `${item.name}=${item.value}`).join('; ');

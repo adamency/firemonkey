@@ -1,8 +1,7 @@
-﻿browser.userScripts.onBeforeScript.addListener(script => {
+browser.userScripts.onBeforeScript.addListener(script => {
   // --- globals
   const {name, resource, info, id = `_${name}`, injectInto, grantRemove,
     registerMenuCommand, requireRemote} = script.metadata;  // set id as _name
-  const cache = {};
   const valueChange = {};
   const scriptCommand = {};
   let {storage} = script.metadata;                          // storage at the time of registration
@@ -41,7 +40,7 @@
       // process addValueChangeListener (only for remote) (key, oldValue, newValue, remote)
       Object.keys(valueChange).forEach(item =>
          !api.equal(oldValue[item], newValue[item]) &&
-          (valueChange[item])(item, oldValue[item], newValue[item], !api.equal(newValue[item], cache[item]))
+          (valueChange[item])(item, oldValue[item], newValue[item], !api.equal(newValue[item], storage[item]))
       );
     }
 
@@ -51,13 +50,12 @@
 
     // ----- synch APIs
     GM_getValue(key, defaultValue) {
-      const response = cache.hasOwnProperty(key) ? cache[key] :
-                          storage.hasOwnProperty(key) ? storage[key] : defaultValue;
+      const response = storage.hasOwnProperty(key) ? storage[key] : defaultValue;
       return api.prepare(response);
     }
 
     GM_listValues() {
-      return script.export([...new Set([...Object.keys(storage), ...Object.keys(cache)])]);
+      return script.export(Object.keys(storage));
     }
 
     GM_getResourceText(resourceName) {
@@ -189,7 +187,7 @@
     },
 
     setValue(key, value) {
-      cache[key] = value;
+      storage[key] = value;
       return browser.runtime.sendMessage({
         name,
         api: 'setValue',
@@ -198,7 +196,7 @@
     },
 
     deleteValue(key) {
-      delete cache[key];
+      delete storage[key];
       return browser.runtime.sendMessage({
         name,
         api: 'deleteValue',

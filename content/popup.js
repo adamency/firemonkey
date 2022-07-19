@@ -1,4 +1,4 @@
-﻿import {pref, App, Meta, CheckMatches} from './app.js';
+import {pref, App, Meta, CheckMatches} from './app.js';
 
 // ----------------- Internationalization ------------------
 App.i18n();
@@ -100,7 +100,7 @@ class Popup {
 
     // --- check commands if there are active scripts in tab & has registerMenuCommand v2.45
     if(Tab.some(item => pref[item].enabled &&
-      ['GM_registerMenuCommand', 'GM.registerMenuCommand'].some(i => pref[item].grant.includes(i)))) {
+      ['GM_registerMenuCommand', 'GM.registerMenuCommand'].some(i => pref[item].grant?.includes(i)))) {
       browser.runtime.onMessage.addListener((message, sender) =>
           sender.tab.id === tabId && this.addCommand(tabId, message));
       browser.tabs.sendMessage(tabId, {listCommand: []});

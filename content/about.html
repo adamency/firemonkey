@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -17,6 +17,24 @@
 
     <h2 id="changelog">Changelog</h2>
     <dl>
+
+      <dt>2.57</dt>
+      <dd>Added <code>@advanced</code> support as <code>@var</code> alias</dd>
+      <dd>Added <code>@preprocessor</code> support in <code>@var</code> in UserStyle (not userCSS)</dd>
+      <dd>Added <code>dropdown</code> support in <code>@advanced</code></dd>
+      <dd>Added <code>image</code> support in <code>@advanced</code></dd>
+      <dd>Added <code>null</code> support in <code>@var</code></dd>
+      <dd>Added misplaced <code>"unit"</code> support in <code>@var</code></dd>
+      <dd>Added multiline <code>select</code> support in <code>@var</code></dd>
+      <dd>Added Reset to User Variables</dd>
+      <dd>Fixed an error in enable script (from 2.54)</dd>
+      <dd>Fixed Sync storage issue (#485)</dd>
+      <dd>Fixed User Metadata & Storage not cleared when creating new script (#491)</dd>
+      <dd>Removed allowed install URL checklist (#480)</dd>
+      <dd>Updated <code>unsafeWindow</code> implementation</dd>
+      <dd>Updated Bulgarian (bg) locale</dd>
+      <dd>Updated <code>fetch</code> & <code>XMLHttpRequest</code> mapping workaround</dd>
+      <dd>Upgraded JSHint to 2.13.5</dd>
 
       <dt>2.56</dt>
       <dd>Added experimental <code>@var</code> (#293)</dd>
@@ -60,7 +78,7 @@
       <dd>Removed a debugging console.log</dd>
 
       <dt>2.48</dt>
-      <dd>Added object 'active' compatibilty in GM openIntab</dd>
+      <dd>Added object 'active' compatibility in GM openIntab</dd>
       <dd>Added return value to GM openIntab (experimental)</dd>
       <dd>Updated GM APIs' return values</dd>
       <dd>Fixed an iframe theme setting error (#435)</dd>
@@ -98,7 +116,7 @@
       <dt>2.43</dt>
       <dd>Added CodeMirror Key Maps (#423)</dd>
       <dd>Added experimental live userCSS update of open tabs (#295)</dd>
-      <dd>Added experimental sync storage compatibility (#98)</dd>
+      <dd>Added experimental Sync storage compatibility (#98)</dd>
       <dd>Added GM addElement</dd>
       <dd>Updated <code>GM_getResourceText</code> for improved compatibility</dd>
       <dd>Fixed an issue with disabled Auto-Update Interval</dd>
@@ -126,7 +144,7 @@
       <dd>Added userScript container support for Firefox 98 (#378)</dd>
       <dd>Removed editor update after save (#403)</dd>
       <dd>Added <code>@disable-synchGM</code> to disable synchronous GM API via user metadata (#408)</dd>
-      <dd>Fixed the error when userscript is loaded in a background tab (#409)</dd>
+      <dd>Fixed the error when userScript is loaded in a background tab (#409)</dd>
       <dd>Added delete script to Log</dd>
       <dd>Upgraded Underscore library to 1.13.1</dd>
       <dd>Upgraded JSHint to 2.13.2</dd>
@@ -162,7 +180,7 @@
       <dd>Database Migrate to move user run-at/matches/exclude matches to User Metadata</dd>
       <dd>Close popup after script command (#382)</dd>
       <dd>Fixed a bug in GM addValueChangeListener (from 2.25 database migrate) (#381)</dd>
-      <dd>Added container/incognito cookie isolation for GM xmlHttpReques/fetch/download (#378)</dd>
+      <dd>Added container/incognito cookie isolation for GM xmlHttpRequest/fetch/download (#378)</dd>
       <dd>Added "cookies" permission to deal with container/incognito cookie isolation</dd>
       <dd>Added anonymous flag to GM xmlHttpRequest & fetch</dd>
       <dd>Fixed an error with quotation mark when inject-to page (#377)</dd>
@@ -206,7 +224,7 @@
 
       <dt>2.29</dt>
       <dd>Fixed an option page display inconsistency across platforms</dd>
-      <dd>Required local scripts & libraries will appear under the userscript name in debugger</dd>
+      <dd>Required local scripts & libraries will appear under the userScript name in debugger</dd>
 
       <dt>2.28</dt>
       <dd>Fixed a typo in multi-file import (from 2.25)</dd>
@@ -233,12 +251,12 @@
       <dd>Fixed an error when setting CodeMirror extraKeys</dd>
       <dd>Added error reason to info temporary insertion</dd>
       <dd>Added error message to to the Scratchpad insertion error</dd>
-      <dd>GM addScript will appear under the userscript name in debugger</dd>
+      <dd>GM addScript will appear under the userScript name in debugger</dd>
       <dd>Redesigned script menu as a sidebar</dd>
       <dd>Removed some styling in preparation for Proton in Firefox 89 (2021-06-01)</dd>
 
       <dt>2.24</dt>
-      <dd>Fixed import Options bug not importing userscript storage</dd>
+      <dd>Fixed import Options bug not importing userScript storage</dd>
 
       <dt>2.23</dt>
       <dd>Fixed a display bug showing match for iframes when <code>allFrames</code> is not true</dd>
@@ -372,7 +390,7 @@
       <dd>Fixed an issue with Custom CSS</dd>
 
       <dt>2.3</dt>
-      <dd>Fixed an issue with custom CodeMirrior lint option</dd>
+      <dd>Fixed an issue with custom CodeMirror lint option</dd>
 
       <dt>2.2</dt>
       <dd>Fixed a typo</dd>
@@ -490,7 +508,7 @@
 
       <dt>1.35</dt>
       <dd>Fixed a typo in <code>@resource</code> processing code (from 1.27)</dd>
-      <dd>Added <code>@inlcude</code> to <code>@match</code> conversion for <code>.co*.*</code></dd>
+      <dd>Added <code>@include</code> to <code>@match</code> conversion for <code>.co*.*</code></dd>
 
       <dt>1.34</dt>
       <dd>Improved Syntax Highlight rendering</dd>
@@ -598,7 +616,7 @@
 
       <dt>1.20</dt>
       <dd>Fixed an update bug with edited script from GreasyFork</dd>
-      <dd>Workaround for Webextension UUID leak via Fetch requests (https://bugzilla.mozilla.org/show_bug.cgi?id=1405971)</dd>
+      <dd>Workaround for WebExtension UUID leak via Fetch requests (https://bugzilla.mozilla.org/show_bug.cgi?id=1405971)</dd>
 
       <dt>1.19</dt>
       <dd>Added Web Install option for <i>greasyfork.org</i></dd>
@@ -668,7 +686,7 @@
       <dd>Removed a leftover console.log</dd>
 
       <dt>1.2</dt>
-      <dd>Fixed GreaseMoneky compatibility with run-at (GM use hyphen while API uses underscore)</dd>
+      <dd>Fixed GreaseMonkey compatibility with run-at (GM use hyphen while API uses underscore)</dd>
 
       <dt>1.1</dt>
       <dd>Fixed an issue when pasting new scripts</dd>
@@ -694,6 +712,7 @@
       <dd><b>es</b>: </dd>
       <dd><b>it:</b> </dd>
       <dd><b>nl:</b> Heimen Stoffels (Vistaus)</dd>
+      <dd><b>pt_BR:</b> felipdsa21</dd>
       <dd><b>ru:</b> vanja-san</dd>
       <dd><b>zh_CN:</b> yfdyh000, linsui</dd>
       <dd><b>zh_TW:</b> s8321414</dd>

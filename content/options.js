@@ -1,4 +1,4 @@
-﻿import {pref, App, Meta, RemoteUpdate} from './app.js';
+import {pref, App, Meta, RemoteUpdate} from './app.js';
 const RU = new RemoteUpdate();
 
 // ----------------- Internationalization ------------------
@@ -83,6 +83,8 @@ class Script {
 
     // --- User Variables
     this.userVar = document.querySelector('.userVar ul');
+    Meta.userVar = this.userVar;
+    document.querySelector('.userVar button').addEventListener('click', () => this.resetUserVar());
 
     // --- User Metadata
     this.userMeta = document.querySelector('#userMeta');
@@ -91,7 +93,7 @@ class Script {
 
     const userMetaSelect = document.querySelector('#userMetaSelect');
     userMetaSelect.selectedIndex = 0;
-    userMetaSelect.addEventListener('change', (e) => {
+    userMetaSelect.addEventListener('change', e => {
       this.userMeta.value = (this.userMeta.value + '\n' + e.target.value).trim();
       e.target.selectedIndex = 0;
     });
@@ -103,9 +105,9 @@ class Script {
     document.querySelectorAll('.script button, .script li.button, aside button').forEach(item =>
       item.addEventListener('click', e => this.processButtons(e)));
 
-    window.addEventListener('beforeunload', () => {
-      this.unsavedChanges() ? event.preventDefault() : this.box.value = '';
-    });
+    window.addEventListener('beforeunload', e =>
+      this.unsavedChanges() ? e.preventDefault() : this.box.value = ''
+    );
 
 
     this.template = {
@@ -188,7 +190,7 @@ class Script {
 
         // enabled/disabled
         if (oldValue && newValue && newValue.enabled !== oldValue.enabled) {
-          const li = document.querySelector(`[data-id="${id}"]`);
+          const li = document.getElementById(id);
           li && li.classList.toggle('disabled', !newValue.enabled);
           if (id === this.box.id) {
             this.legend.classList.toggle('disabled', !newValue.enabled);
@@ -231,7 +233,7 @@ class Script {
         eqeqeq: true,
         esversion: 11,
         expr: true,
-       /* forin: true,*/
+  //      forin: true,
         freeze: true,
         globals: {
           GM: false, GM_addScript: false, GM_addStyle: false, GM_addValueChangeListener: false, GM_deleteValue: false,
@@ -367,7 +369,7 @@ class Script {
 
   hexToRgb(color) {
     const m = color.substring(1).match(/.{2}/g).map(hex => parseInt(hex, 16));
-    const op = this.oldColor.match(/[\d.]+/g)[3];
+    const op = this.oldColor.match(/[\d.]+/g)?.[3];
     op && m.push(op);
     return (op ? 'rgba(' : 'rgb(') + m.join(',') + ')';
   }
@@ -632,6 +634,8 @@ class Script {
     legend.textContent = '';
     legend.className = type;
     legend.textContent = browser.i18n.getMessage(type === 'js' ? 'newJS' : 'newCSS');
+    this.userMeta.value = '';
+    this.storage.value = '';
 
     const text = pref.template[type] || this.template[type];
     box.value = text;
@@ -664,7 +668,7 @@ class Script {
 
     if (this.box.id) {                                      // refresh previously loaded content
       this.box.textContent = '';
-      document.querySelector(`[data-id="${this.box.id}"]`).click();
+      document.getElementById(this.box.id).click();
     }
   }
 
@@ -674,7 +678,7 @@ class Script {
     item.enabled || li.classList.add('disabled');
     item.error && li.classList.add('error');
     li.textContent = item.name;
-    li.dataset.id = `_${item.name}`;
+    li.id = `_${item.name}`;
     this.docfrag.appendChild(li);
     li.addEventListener('click', e => this.showScript(e));
   }
@@ -710,12 +714,12 @@ class Script {
     this.cm?.save();                                        // save CodeMirror to textarea
     if(this.unsavedChanges()) {
       li.classList.remove('on');
-      box.id && document.querySelector(`[data-id="${box.id}"]`)?.classList.add('on');
+      box.id && document.getElementById(box.id)?.classList.add('on');
       return;
     }
     this.cm?.toTextArea();                        // reset CodeMirror
 
-    const id = li.dataset.id;
+    const id = li.id;
     box.id = id;
     this.legend.textContent = pref[id].name;
     this.legend.className = li.classList.contains('js') ? 'js' : 'css';
@@ -747,8 +751,38 @@ class Script {
     this.setCodeMirror();
   }
 
+  prepareColor(node, color) {
+    switch (true) {
+      case color.startsWith('rgba'):                         // convert rgba() -> #rrggbb
+        const op = color.match(/[\d.]+/g)?.[3];
+        op && (node.dataset.opacity = Math.round(op * 255).toString(16).padStart(2, '0'));
+        return this.rgbToHex(color);
+
+      case color.startsWith('rgb'):                         // convert rgba() -> #rrggbb
+        return this.rgbToHex(color);
+
+      case /^#\w{8}$/.test(color):                          // #rrggbbaa
+        node.dataset.opacity = color.slice(-2);
+        return color.slice(0,-2);
+
+      case /^#\w{4}$/.test(color):                          // convert #rgba -> #rrggbbaa
+        node.dataset.opacity = color.slice(-1).repeat(2);
+        return this.hex3to6(color.slice(0,-1));
+
+      case /^#\w{3}$/.test(color):                          // convert #rgb -> #rrggbb
+        return this.hex3to6(color);
+
+      case !color.startsWith('#'):                          // convert named -> #rrggbb
+        return this.namedColors(color);
+
+      default:
+        return color;
+    }
+  }
+
   showUserVar(id) {
     this.userVar.textContent = '';                          // reset
+    delete this.userVar.dataset.reset;
     const tmp = this.liTemplate.cloneNode();
     tmp.append(document.createElement('label'), document.createElement('input'));
     const sel = document.createElement('select');
@@ -759,18 +793,28 @@ class Script {
       const li = tmp.cloneNode(true);
       switch (value.type) {
         case 'text':
-        case 'color':
           li.children[0].textContent = value.label;
           li.children[1].dataset.id = key;
           li.children[1].type = value.type;
           li.children[1].value = value.user;
+          li.children[1].dataset.default = value.value;
+          break;
+
+        case 'color':
+          const clr = this.prepareColor(li.children[1], value.user);
+          li.children[0].textContent = value.label;
+          li.children[1].dataset.id = key;
+          li.children[1].type = value.type;
+          li.children[1].value = clr;
+          li.children[1].dataset.default = value.value;
           break;
 
         case 'checkbox':
           li.children[0].textContent = value.label;
           li.children[1].dataset.id = key;
           li.children[1].type = value.type;
-          li.children[1].checked = value.user;
+          li.children[1].checked = Boolean(value.user);
+          li.children[1].dataset.default = value.value;
           break;
 
         case 'number':
@@ -778,9 +822,10 @@ class Script {
           li.children[1].dataset.id = key;
           li.children[1].type = value.type;
           li.children[1].value = value.user;
-          li.children[1].min = value.value[1];
-          li.children[1].max = value.value[2];
+          value.value[1] !== null && (li.children[1].min = value.value[1]);
+          value.value[2] !== null && (li.children[1].max = value.value[2]);
           li.children[1].step = value.value[3];
+          li.children[1].dataset.default = value.value[0];
           break;
 
         case 'range':
@@ -790,14 +835,17 @@ class Script {
           li.children[2].dataset.id = key;
           li.children[2].type = value.type;
           li.children[2].value = value.user;
-          li.children[2].min = value.value[1];
-          li.children[2].max = value.value[2];
+          value.value[1] !== null && (li.children[2].min = value.value[1]);
+          value.value[2] !== null && (li.children[2].max = value.value[2]);
           li.children[2].step = value.value[3];
+          li.children[2].dataset.default = value.value[0];
           li.children[2].addEventListener('input',
             e => li.children[1].textContent = e.target.value + (value.value[4] || ''));
           break;
 
         case 'select':
+        case 'dropdown':
+        case 'image':
           li.children[1].remove();
           li.appendChild(sel.cloneNode());
            li.children[0].textContent = value.label;
@@ -807,11 +855,40 @@ class Script {
             value.value.forEach(item => li.children[1].appendChild(new Option(item.replace(/\*$/, ''), item))) :
              Object.entries(value.value).forEach(([k, v]) => li.children[1].appendChild(new Option(k.replace(/\*$/, ''), v)));
           li.children[1].value = value.user;
+
+          li.children[1].dataset.default =
+            Array.isArray(value.value) ? value.value.find(item => item.endsWith('*')) || value.value[0] :
+              value.value[Object.keys(value.value).find(item => item.endsWith('*')) || Object.keys(value.value)[0]];
           break;
       }
       this.docfrag.appendChild(li);
     });
     this.userVar.appendChild(this.docfrag);
+  }
+
+  resetUserVar() {
+    if(!this.userVar.children[0]) { return; }
+
+    this.userVar.dataset.default = 'true';
+    this.userVar.querySelectorAll('input, select').forEach(item => {
+      let val = item.type === 'checkbox' ? item.checked + '' : item.value;
+      if (val !== item.dataset.default) {
+        switch (item.type) {
+          case 'checkbox':
+            item.checked = item.dataset.default === '1';
+            break;
+
+          case 'range':
+            item.value = item.dataset.default;
+            item.dispatchEvent(new Event('input'));
+            break;
+
+          default:
+            item.value = item.dataset.default;
+        }
+        item.parentNode.classList.add('default');
+      }
+    });
   }
 
   noSpace(str) {
@@ -878,7 +955,7 @@ class Script {
 
     const deleted = [];
     multi.forEach(item => {
-      const id = item.dataset.id;
+      const id = item.id;
       item.remove();                                        // remove from menu list
       delete pref[id];
       deleted.push(id);
@@ -967,7 +1044,7 @@ class Script {
       data.storage = pref[id].storage;
 
       // --- check for Web Install, set install URL
-      if (!data.updateURL && App.allowedHost(pref[id].updateURL)) {
+      if (!data.updateURL && pref[id].updateURL) {
         data.updateURL = pref[id].updateURL;
         data.autoUpdate = true;
       }
@@ -976,7 +1053,7 @@ class Script {
       const li = document.querySelector('aside li.on');
       li.classList.remove('error');                         // reset error
       li.textContent = data.name;
-      li.dataset.id = id;
+      li.id = id;
     }
 
     // --- check storage JS only
@@ -1050,7 +1127,7 @@ class Script {
 
     this.process();                                         // update page display
     this.box.value = '';                                    // clear box avoid unsavedChanges warning
-    document.querySelector(`[data-id="${id}"]`)?.click();   // reload the new script
+    document.getElementById(id)?.click();                   // reload the new script
   }
 
   // ----------------- Import Script -----------------------
@@ -1358,7 +1435,7 @@ class Nav {
         break;
 
       default:
-        document.querySelector(`[data-id="${nav}"]`).click();
+        document.getElementById(nav).click();
     }
   }
 }
@@ -1383,4 +1460,3 @@ App.getPref().then(() => {
   pref.customOptionsCSS && (document.querySelector('style').textContent = pref.customOptionsCSS);
 });
 // ----------------- /User Preference ----------------------
-

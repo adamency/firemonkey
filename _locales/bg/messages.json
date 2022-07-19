@@ -42,7 +42,10 @@
     "message": "Шаблоните (по един на ред) за изключване чрез съвпадение предотвратяват изпълнение на скриптовете."
   },
   "userVar": {
-    "message": "User Variables"
+    "message": "Потребителски променливи"
+  },
+  "reset": {
+    "message": "Reset"
   },
   "userMeta": {
     "message": "Описателни данни"
@@ -99,13 +102,13 @@
     "message": "Избраното в малки букви"
   },
   "wrapIIFE": {
-    "message": "Wrap code in IIFE"
+    "message": "Обграждане на кода в IIFE"
   },
   "stylish": {
     "message": "Инсталиране на стил на Stylish"
   },
   "beautify": {
-    "message": "Beautify"
+    "message": "Подреждане на кода"
   },
   "report": {
     "message": "Доклад"
@@ -168,7 +171,7 @@
     "message": "Отменяне"
   },
   "undoDisabled": {
-    "message": "Only for CSS"
+    "message": "Само за CSS"
   },
   "insertError": {
     "message": "Грешка при вмъкване"
@@ -192,7 +195,7 @@
     "message": "Настройка на външния вид на изскачащия прозорец"
   },
   "cmOptionsDescription": {
-    "message": "Настройка на CodeMirror, добавките и проверките на кода на JavaScript."
+    "message": "Настройки на CodeMirror, добавките и проверките на кода на JavaScript"
   },
   "about": {
     "message": "Относно"
@@ -222,18 +225,12 @@
     "message": "Внасяне"
   },
   "jsonError": {
-    "message": "Invalid JSON"
+    "message": "Недопустим JSON"
   },
   "options": {
     "message": "Настройки"
   },
   "saveOptions": {
     "message": "Запазване"
-  },
-  "trimTrailingSpaces": {
-    "message": "Изчистване на висящи интервали"
-  },
-  "cmOptionsError": {
-    "message": "Грешен JSON на CodeMirror"
   }
 }

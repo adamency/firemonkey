@@ -1,4 +1,4 @@
-﻿@import 'default.css';
+@import 'default.css';
 @import 'default-options.css';
 
 /* ----- Mobile ----- */
@@ -450,7 +450,7 @@ button.bin img {
   background-color: var(--option-bg);
   background-repeat: no-repeat;
   transition: none;
-  cursor: pointer;  
+  cursor: pointer;
   opacity: 0.7;
 }
 
@@ -488,6 +488,16 @@ button.bin img {
 .menu div.userVar li output {
   margin-right: 0.5em;
 }
+
+.menu div.userVar li.default {
+  background-color: var(--hover);
+}
+
+.menu div.userVar button {
+  border: 0;
+  padding: 0.8em;
+}
+
 
 .script fieldset {
   border: 0;
