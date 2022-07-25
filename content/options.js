@@ -656,11 +656,6 @@ class Script {
   }
 
   process() {
-    // --- CodeMirror Key Maps
-    const cmOptions = App.JSONparse(pref.cmOptions) || {};
-    cmOptions.keyMap &&
-      (document.querySelector('#keyMap').src = `../lib/codemirror/keymap/${cmOptions.keyMap}.js`);
-
     this.navUL.textContent = '';                            // clear data
 
     App.getIds().sort(Intl.Collator().compare).forEach(item => this.addScript(pref[item]));
