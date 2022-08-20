@@ -2,13 +2,53 @@ Manifest-Version: 1.0
 
 Name: manifest.json
 Digest-Algorithms: SHA1 SHA256
-SHA1-Digest: iBPWG1t/ui0g98VK77SXi90YJ7M=
-SHA256-Digest: I0kiHKEb9PTlT29IStGCQAaiIHu/HSu1h9EJm/1SDvA=
+SHA1-Digest: frZ88IWBPKch3XhXG0jRTG9vMsc=
+SHA256-Digest: 6GbLVBcNrHFie/Waq4HKO3zNzVadsDeukiwXgL+//JM=
+
+Name: _locales/en/messages.json
+Digest-Algorithms: SHA1 SHA256
+SHA1-Digest: lx+ECuVoWZjgd43Owjn+Pa9JZZY=
+SHA256-Digest: 1cEKPV/LZ8kNQKW4d237mtcKYeMGOar6xA+eJrD19Pc=
+
+Name: _locales/bg/messages.json
+Digest-Algorithms: SHA1 SHA256
+SHA1-Digest: T9BYETW9qcDFTUr4cftC1CI2v3Y=
+SHA256-Digest: Y281llSup3m40/+UcCced14NALaQSkHkwQvR6K7Oi2E=
+
+Name: _locales/zh_CN/messages.json
+Digest-Algorithms: SHA1 SHA256
+SHA1-Digest: ji/tJKNtty99035bAJA6M7/Anf0=
+SHA256-Digest: B3EW4QylRvqUI9nSi/hw99CKNqn5nlN73+QESdjPccM=
+
+Name: _locales/zh_TW/messages.json
+Digest-Algorithms: SHA1 SHA256
+SHA1-Digest: qJOTNMsJT2MRN0fy2aoO4toMtU0=
+SHA256-Digest: IS3kRSOu8TWndM/Xdwkb3r48oTPDaugW9wh+7uSG6G8=
+
+Name: _locales/nl/messages.json
+Digest-Algorithms: SHA1 SHA256
+SHA1-Digest: l4hIIIc5UlnIL8NMBLiXh+GRxOs=
+SHA256-Digest: MykJfBZE1Krcmp5+mnM2lW8iK4nwNo1eW0QfmoI4K3Y=
+
+Name: _locales/pt_BR/messages.json
+Digest-Algorithms: SHA1 SHA256
+SHA1-Digest: v3EH58lUnvj/P/QHPe4CK0iRT8g=
+SHA256-Digest: Jei2Y2AmEM0iILKCX8p80/NodXfAjIkpHUMlIrMUxrI=
+
+Name: _locales/ru/messages.json
+Digest-Algorithms: SHA1 SHA256
+SHA1-Digest: fwGC/xkBwXPbFmVWZJX77qljHb0=
+SHA256-Digest: z3jfXgJwIBvv2J/Dh3tUlSkDdXY0NKWAbqv7Fw41xCQ=
 
 Name: content/help.html
 Digest-Algorithms: SHA1 SHA256
-SHA1-Digest: 4PT7Vv+RG8HL8/z5bTDjXm1kPOA=
-SHA256-Digest: aTbrXPjHDXGx4MxtWFRTM+KiQviYaYtzorvZnxdEf3g=
+SHA1-Digest: zAK1O024cquAdE4TKp9XbolF0DY=
+SHA256-Digest: Chs9BOfnXssYTiTZpJt7RzEYp2PCn71Er37ev87vwK8=
+
+Name: content/install.html
+Digest-Algorithms: SHA1 SHA256
+SHA1-Digest: hyDy2F2M84ZYrY1v6NTI0P+TkNU=
+SHA256-Digest: F5MGiT2McHDP5oJ15KydQwFOodbMiguOF+S1xgD3kQ8=
 
 Name: content/api-plus.js
 Digest-Algorithms: SHA1 SHA256
@@ -27,8 +67,8 @@ SHA256-Digest: cPYzwABuHX2XOdMbhLUdDVjCGtfjm49AdxAtSkBujWU=
 
 Name: content/background.js
 Digest-Algorithms: SHA1 SHA256
-SHA1-Digest: Khp4Dy5P8c+IWt2nURGOFsLL418=
-SHA256-Digest: 8yrq0K12Dk5Tq4+0xhscpalFQlCeO304fxpVIh/Wfl4=
+SHA1-Digest: bR4989TxOUfkjWXNZZdTGIeRH1U=
+SHA256-Digest: biA8YulWcLmi1e9UxagVUzf8hHrh80OR6npxbzwj78A=
 
 Name: content/cm-config.js
 Digest-Algorithms: SHA1 SHA256
@@ -67,13 +107,13 @@ SHA256-Digest: Gz0AfpXxtBq985Tlwa00u2eFrq6fRchaRRAdaqikh54=
 
 Name: content/options.css
 Digest-Algorithms: SHA1 SHA256
-SHA1-Digest: hTBmHDgISeJ4WpFy36r/zQWEIco=
-SHA256-Digest: 5Mvsf38CQZfqETql2+tWXhdpGZ+yRTB31L7nTjSr6xA=
+SHA1-Digest: vmtYWh0/a9IamXatGWaCpNcbqC4=
+SHA256-Digest: V1JjHzrD8hROMbEipI2D1Yl2UHIizGkzDAz0TO+KsaE=
 
 Name: content/options.html
 Digest-Algorithms: SHA1 SHA256
-SHA1-Digest: tnjU0nuplmgh7pfS1HUYj6MC/n8=
-SHA256-Digest: Ab6Ah1tr26ugjXXuV8fSeoUCJLcc5lOHlcRXywfxhvI=
+SHA1-Digest: +VeFUhI4CMlxaK9j5WuX1ivMjNY=
+SHA256-Digest: oHAHRlEmBu4fcwQ5vIQHIiGq12wmZEiDe+MIr7Lkd/Q=
 
 Name: content/options.js
 Digest-Algorithms: SHA1 SHA256
@@ -102,8 +142,13 @@ SHA256-Digest: /QttAbJuxBq8My9hupOB9RpNGQmeojQroah1G9d4/IY=
 
 Name: content/about.html
 Digest-Algorithms: SHA1 SHA256
-SHA1-Digest: 1Ke9UlX3BxUbIRavOKCyRhJXoMw=
-SHA256-Digest: he2UBQg4wBQBWRiVyg/TI8ddR9bHMOGXyFjt/XXe8+0=
+SHA1-Digest: tnEZgPD5o56VK8Fw9BcJaDqjkhk=
+SHA256-Digest: S8U+ZdBXTNenJsnEzezC9WryJNaidMPSdM/w+OGd96M=
+
+Name: content/log.html
+Digest-Algorithms: SHA1 SHA256
+SHA1-Digest: Sh+w4UJ1XUbztQ46kWpHzZuPAf4=
+SHA256-Digest: oxG5qBa+Lv1JBuIz2DYIeG3PIA284MDU8KpYuj1OCIA=
 
 Name: image/back.svg
 Digest-Algorithms: SHA1 SHA256
@@ -320,11 +365,6 @@ Digest-Algorithms: SHA1 SHA256
 SHA1-Digest: rqnhGRTxcLqjwUeZElzLYSN7Jz8=
 SHA256-Digest: n56BpqubD6I+zUDpfh9oIrG+EyJKgNWgAH5Lr1tMBHE=
 
-Name: lib/codemirror/addon/hint/fm-javascript-hint.js
-Digest-Algorithms: SHA1 SHA256
-SHA1-Digest: k6PX4exm6oPomGiSO2u8bwUyfAA=
-SHA256-Digest: +xcHFai3cEtEuienqk2tohiZcpxXtv2oWGUc4ZvmTkY=
-
 Name: lib/codemirror/addon/hint/show-hint.css
 Digest-Algorithms: SHA1 SHA256
 SHA1-Digest: eE9MHwmhm0gtIkKrl+i+NX7yVUA=
@@ -334,6 +374,11 @@ Name: lib/codemirror/addon/hint/show-hint.js
 Digest-Algorithms: SHA1 SHA256
 SHA1-Digest: V1kZ0MRlXvKbZtxuTpo9WGXpsv4=
 SHA256-Digest: yg0ESU2DlGSRFSIxFU2EsrLnN/tBXvLYELe8697zyW0=
+
+Name: lib/codemirror/addon/hint/javascript-hint.js
+Digest-Algorithms: SHA1 SHA256
+SHA1-Digest: 7XNPzDXZcGEHVLcvLcMnc4BHBpw=
+SHA256-Digest: bkHOHMdRHjABAg6/1WvigPBWVrKCO1E+pbJ+RcQzjEc=
 
 Name: lib/codemirror/addon/lint/css-lint.js
 Digest-Algorithms: SHA1 SHA256
@@ -790,48 +835,13 @@ Digest-Algorithms: SHA1 SHA256
 SHA1-Digest: UmDokinUqWIPkEJ+nIxLI2Vhndk=
 SHA256-Digest: K6PMl7matRcks1azH+qaf43BNAaS9ZYNDLWfdZ0rrMQ=
 
-Name: _locales/en/messages.json
-Digest-Algorithms: SHA1 SHA256
-SHA1-Digest: lx+ECuVoWZjgd43Owjn+Pa9JZZY=
-SHA256-Digest: 1cEKPV/LZ8kNQKW4d237mtcKYeMGOar6xA+eJrD19Pc=
-
-Name: _locales/bg/messages.json
-Digest-Algorithms: SHA1 SHA256
-SHA1-Digest: T9BYETW9qcDFTUr4cftC1CI2v3Y=
-SHA256-Digest: Y281llSup3m40/+UcCced14NALaQSkHkwQvR6K7Oi2E=
-
-Name: _locales/zh_CN/messages.json
-Digest-Algorithms: SHA1 SHA256
-SHA1-Digest: ji/tJKNtty99035bAJA6M7/Anf0=
-SHA256-Digest: B3EW4QylRvqUI9nSi/hw99CKNqn5nlN73+QESdjPccM=
-
-Name: _locales/zh_TW/messages.json
-Digest-Algorithms: SHA1 SHA256
-SHA1-Digest: qJOTNMsJT2MRN0fy2aoO4toMtU0=
-SHA256-Digest: IS3kRSOu8TWndM/Xdwkb3r48oTPDaugW9wh+7uSG6G8=
-
-Name: _locales/nl/messages.json
-Digest-Algorithms: SHA1 SHA256
-SHA1-Digest: l4hIIIc5UlnIL8NMBLiXh+GRxOs=
-SHA256-Digest: MykJfBZE1Krcmp5+mnM2lW8iK4nwNo1eW0QfmoI4K3Y=
-
-Name: _locales/pt_BR/messages.json
-Digest-Algorithms: SHA1 SHA256
-SHA1-Digest: v3EH58lUnvj/P/QHPe4CK0iRT8g=
-SHA256-Digest: Jei2Y2AmEM0iILKCX8p80/NodXfAjIkpHUMlIrMUxrI=
-
-Name: _locales/ru/messages.json
-Digest-Algorithms: SHA1 SHA256
-SHA1-Digest: fwGC/xkBwXPbFmVWZJX77qljHb0=
-SHA256-Digest: z3jfXgJwIBvv2J/Dh3tUlSkDdXY0NKWAbqv7Fw41xCQ=
-
 Name: META-INF/cose.manifest
 Digest-Algorithms: SHA1 SHA256
-SHA1-Digest: MznOF2fTQDLJpV0ah7JjTCbMtCg=
-SHA256-Digest: /vw8etry/K58+9hf1GHX5xQOFEDD3TBHaNU7VzRjOng=
+SHA1-Digest: 54dMTSzJPvpfeXoxMvX1NrRyq3c=
+SHA256-Digest: GaqNXjoTRMPedMtXBqxrrJxMA/W59eehAMHsrjLCXFU=
 
 Name: META-INF/cose.sig
 Digest-Algorithms: SHA1 SHA256
-SHA1-Digest: B2tuwOG2EiA+iO8jE1wSE2AffDU=
-SHA256-Digest: ybnG/jQwT9dFt5cnDT+AgG33vIKxCJfq+eYN4atN4IY=
+SHA1-Digest: wI/6hPGLyIsGoXOLfEQa5c2WF4o=
+SHA256-Digest: ia5Ob73A+OVkhayl3ucwdcQObBkwXc5sxwjtkPC2uZE=
 

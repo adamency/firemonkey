@@ -100,7 +100,6 @@ aside ul:hover {
 }
 
 aside li {
-  font-size: 0.8em;
   transition: 0.5s;
   cursor: pointer;
   overflow: hidden;
@@ -161,7 +160,6 @@ aside div:last-of-type {
 aside div label.flat,
 aside div button.flat {
   padding: 0.3em;
-  font-size: 0.8em;
 }
 /* ----- /Aside Scripts ----- */
 
@@ -175,7 +173,6 @@ aside li {
 }
 
 aside ul + div {
-  font-size: 0.8em;
   text-align: right;
   position: absolute;
   bottom: 3em;
@@ -553,7 +550,7 @@ legend span {
 
 footer {
   color: #999;
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   text-align: right;
   height: 1rem;
 }
@@ -602,7 +599,7 @@ footer {
   pointer-events: none;
   counter-increment: n;
   content: counter(n);
-  font-size: 0.7em;
+  font-size: 0.8em;
 }
 
 .log input[type="number"] {

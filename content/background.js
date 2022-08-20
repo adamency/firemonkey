@@ -924,7 +924,7 @@ class API {
         .catch(error => App.log(name, `${message.api} ➜ ${error.message}`, 'error'));  // failed notification
 
       case 'fetch':
-        return this.fetch(e, storeId);
+        return this.fetch(e, storeId, name);
 
       case 'xmlHttpRequest':
         return this.xmlHttpRequest(e, storeId);
@@ -934,19 +934,19 @@ class API {
   async addCookie(url, headers, storeId) {
     // add contextual cookies, only in container/incognito
     // https://bugzilla.mozilla.org/show_bug.cgi?id=1670278
-    // if privacy. firstparty.isolate = true
+    // if privacy.firstparty.isolate = true
     // Error: First-Party Isolation is enabled, but the required 'firstPartyDomain' attribute was not set.
     const cookies = await browser.cookies.getAll({url, storeId});
     const str = cookies && cookies.map(item => `${item.name}=${item.value}`).join('; ');
     str && (headers['FM-Contextual-Cookie'] = str);
   }
 
-  async fetch(e, storeId) {
+  async fetch(e, storeId, name) {
     if (e.init.credentials !== 'omit' && storeId) {         // not anonymous AND in container/incognito
       e.init.credentials = 'omit';
       await this.addCookie(e.url, e.init.headers, storeId);
     }
-    Object.keys(e.init.headers)[0] || delete e.init.headers; // clean up
+    Object.keys(e.init.headers || {})[0] || delete e.init.headers; // clean up
 
     return fetch(e.url, e.init)
       .then(async response => {
@@ -955,18 +955,23 @@ class API {
         response.headers.forEach((value, name) => res.headers[name] = value);
         ['bodyUsed', 'ok', 'redirected', 'status', 'statusText', 'type', 'url'].forEach(item => res[item] = response[item]);
 
-        if (e.init.method === 'HEAD') { return res; }   // end here
+        if (e.init.method === 'HEAD') { return res; }       // end here
 
-        switch (e.init.responseType) {
-          case 'json': res['json'] = await response.json(); break;
-          case 'blob': res['blob'] = await response.blob(); break;
-          case 'arrayBuffer': res['arrayBuffer'] = await response.arrayBuffer(); break;
-          case 'formData': res['formData'] = await response.formData(); break;
-          default: res['text'] = await response.text();
+        try {
+          switch (e.init.responseType) {
+            case 'json': res['json'] = await response.json(); break;
+            case 'blob': res['blob'] = await response.blob(); break;
+            case 'arrayBuffer': res['arrayBuffer'] = await response.arrayBuffer(); break;
+            case 'formData': res['formData'] = await response.formData(); break;
+            default: res['text'] = await response.text();
+          }
+          return res;
+        } catch (error) {
+          App.log(name, `fetch ${e.url} ➜ ${error.message}`, 'error');
+          return error.message;
         }
-        return res;
       })
-      .catch(error => App.log(name, `${message.api} ${url} ➜ ${error.message}`, 'error'));
+      .catch(error => App.log(name, `fetch ${e.url} ➜ ${error.message}`, 'error'));
   }
 
   async xmlHttpRequest(e, storeId) {
@@ -1001,12 +1006,12 @@ class API {
       response:         xhr.response,
       responseHeaders:  xhr.getAllResponseHeaders(),
       // responseText is only available if responseType is '' or 'text'.
-      responseText:     xhr.responseText || '',
+      responseText:     xhr.hasOwnProperty('responseText') ? xhr.responseText : '',
       responseType:     xhr.responseType,
       responseURL:      xhr.responseURL,
       // responseXML is only available if responseType is '' or 'document'.
       // cant pass XMLDocument ➜ Error: An unexpected apiScript error occurred
-      responseXML:      xhr.responseXML ? xhr.responseText : '',
+      responseXML:      xhr.hasOwnProperty('responseText') ? xhr.responseText : '',
       status:           xhr.status,
       statusText:       xhr.statusText,
       timeout:          xhr.timeout,

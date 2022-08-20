@@ -43,7 +43,6 @@
             <li><a href="#var">var</a></li>
             <li><a href="#Match-Patterns">Match Patterns</a></li>
             <li><a href="#require">require</a></li>
-
           </ul>
         </li>
 
@@ -121,15 +120,31 @@
   <h3>Quick Fixes</h3>
   <dl>
     <dt>SyntaxError: return not in function</dt>
-    <dd>💡 Use Wrap code in IIFE <a href="#IIFE">ⓘ</a></dd>
-    <dd><i>Greasemonkey</i>, <i>Tampermonkey</i> & <i>Violentmonkey</i>, wrap the userscripts in an anonymous IIFE (Immediately Invoked Function Expression) in order to limit its exposure to the page JavaScript. As a result, such JavaScript parse errors do not cause a problem but that created a situation where developers write JavaScript with syntax errors.</dd>
+    <dd>💡 Use Wrap code in <a href="#IIFE">IIFE</a></dd>
+    <dd><i>Greasemonkey</i>, <i>Tampermonkey</i> & <i>Violentmonkey</i> (as well as <i>Node.js</i>), wrap the userscripts in an anonymous IIFE (Immediately Invoked Function Expression) in order to limit its exposure to the page JavaScript. As a result, such JavaScript parse errors do not cause a problem but that created a situation where developers write JavaScript with syntax errors.</dd>
     <dd><a href="https://eslint.org/demo" target="_blank">ESLint</a> already displays the parse error for above.</dd>
     <dd><a href="https://jshint.com/" target="_blank">JSHint</a> currently doesn't display the error, as posted to <a href="https://github.com/jshint/jshint/issues/3612" target="_blank">JavaScript: Mark return out of function</a>.</dd>
 
 
     <dt><code>@grant none</code> & works in TM|VM</dt>
-    <dd>💡 Try setting <code>@inject-into page</code> in User Metadata</dd>
+    <dd>💡 Try setting <code>@inject-into &nbsp;&nbsp;&nbsp; page</code> in <a href="#User-Metadata">User Metadata</a></dd>
+
+    <dt><a href="#defaults">defaults</a></dt>
+    <dd>
+      <dl>
+        <dt>Userscript needs to run in sub-frames</dt>
+        <dd>💡 Try setting <code>@allFrames &nbsp;&nbsp;&nbsp; true</code> in <a href="#User-Metadata">User Metadata</a></dd>
+
+        <dt>No <code>@run-at</code> and script runs late</dt>
+        <dd>💡 Try setting <code>@run-at &nbsp;&nbsp;&nbsp; document-end</code> in <a href="#User-Metadata">User Metadata</a></dd>
+      </dl>
+
+    </dd>
+
+
+
   </dl>
+  <br>
 
 
 <table>
@@ -137,7 +152,7 @@
   <thead>
     <tr>
       <th style="min-width: 12em;">Area</th>
-      <th style="min-width: 20;">Details</th>
+      <th style="min-width: 20em;">Details</th>
       <th style="min-width: 5em;">Exposure</th>
     </tr>
   </thead>
@@ -164,7 +179,7 @@
 
     <tr><th>@var checkbox</th><td>Requires JavaScript to process logical <i>true/false</i> which is not part of CSS</td><td class="unknown"></td></tr>
     <tr><th>@preprocessor less</th><td>Require <a href="https://lesscss.org/" target="_blank">Less</a> JavaScript Library</td><td class="unknown"></td></tr>
-    <tr><th>@preprocessor stylus</th><td>If uses JavaScript or featuers which are not part of CSS</td><td class="unknown"></td></tr>
+    <tr><th>@preprocessor stylus</th><td>If uses JavaScript or features which are not part of CSS</td><td class="unknown"></td></tr>
     <tr><th>@-moz-document regexp</th><td class="fail">not supported by Firefox API</td><td class="unknown"></td></tr>
   </tbody>
 </table>
@@ -193,6 +208,11 @@
   <h3 id="">Manifest V3</h3>
   <p>Chrome manifest v3 has removed <code>includeGlobs/excludeGlobs</code> parameters which affects the use of <code>include/exclude</code>. <a href="#include">ⓘ</a></p>
 
+  <blockquote><p>With the info available so far, ManifestV3 will kill Violentmonkey, Tampermonkey, Stylus, Stylish, and similar extensions. Google's engineers are either lying or evading such questions when asked directly. There's nothing we can do about that.</p>
+    <cite><a href="https://github.com/violentmonkey/violentmonkey/issues/505" target="_blank">Violentmonkey and manifest V3</a></cite></blockquote>
+
+
+
   <ul>
     <li><a href="https://www.techrepublic.com/article/google-makes-the-perfect-case-for-why-you-shouldnt-use-chrome/" target="_blank">Google makes the perfect case for why you shouldn’t use Chrome</a></li>
     <li><a href="https://www.eff.org/deeplinks/2021/12/chrome-users-beware-manifest-v3-deceitful-and-threatening" target="_blank">Chrome Users Beware: Manifest V3 is Deceitful and Threatening</a></li>
@@ -203,16 +223,14 @@
     <li><a href="https://github.com/w3c/webextensions/issues/51" target="_blank">Requiring Service Workers for extensions fundamentally user hostile</a></li>
     <li><a href="https://www.ghostery.com/blog/manifest-v3-the-ghostery-perspective" target="_blank">Manifest V3: The Ghostery perspective</a></li>
     <li><a href="https://github.com/Tampermonkey/tampermonkey/issues/644" target="_blank">[Chrome] Manifest V3: examine the effects</a></li>
-
+    <li><a href="https://www.theregister.com/2022/05/20/mozilla_opens_testing_for_manifest/" target="_blank">Mozilla opens testing for Manifest v3 extensions in Firefox</a></li>
+    <li><a href="https://adguard.com/en/blog/manifestv3-timeline.html" target="_blank">Objects in Manifest V3 are closer than they appear — and it's not good news</a></li>
+    <li><a href="https://www.neowin.net/news/the-eff-will-fight-google-chrome-manifest-v3-which-kills-extensions-that-reliably-block-ads/" target="_blank">The EFF will fight Google Chrome Manifest v3 which kills extensions that reliably block ads</a></li>
+    <li><a href="https://www.forbes.com/sites/kateoflahertyuk/2022/06/13/firefox-just-gave-3-billion-google-chrome-users-a-reason-to-switch/?sh=7e0de5921a3f" target="_blank">Firefox Just Gave 3 Billion Google Chrome Users A Reason To Switch</a></li>
+    <li><a href="https://bugs.chromium.org/p/chromium/issues/detail?id=1054624" target="_blank">Issue 1054624: Dynamic content script support</a></li>
 
     <!-- <li><a href="" target="_blank"></a></li> -->
-
   </ul>
-
-
-  <blockquote><p>With the info available so far, ManifestV3 will kill Violentmonkey, Tampermonkey, Stylus, Stylish, and similar extensions. Google's engineers are either lying or evading such questions when asked directly. There's nothing we can do about that.</p>
-  <cite><a href="https://github.com/violentmonkey/violentmonkey/issues/505" target="_blank">Violentmonkey and manifest V3</a></cite></blockquote>
-
 
 
 
@@ -570,7 +588,7 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {<span class="property">color<
     <dd>Import one or more Script/CSS from file, same name Script/CSS will be overwritten without warning</dd>
 
     <dt>&#x1f4e4; Export</dt>
-    <dd>Export all Script/CSS to <i>FireMonkey</i> folder in the download location set in <i>Firefox Options -> Downloads</i></dd>
+    <dd>Export all Script/CSS to <i>FireMonkey</i> folder in the download location set in <i>Firefox Options ➜ Downloads</i></dd>
     <dd>&#x1f4f1; <i>Disabled on Android</i></dd>
 
     <dt>&#x1f4e5; Import from Stylus</dt>
@@ -665,7 +683,7 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {<span class="property">color<
           <dt id="IIFE">&#x1f6e0; Wrap code in IIFE</dt>
           <dd>Wrap code in IIFE (Immediately Invoked Function Expression) to fix <code>SyntaxError: return not in function</code>.</dd>
 
-          <dt>&#x1f464; User Metadata</dt>
+          <dt id="User-Metadata">&#x1f464; User Metadata</dt>
           <dd>Persistent user metadata rules to add/amend/disable original Script & CSS metadata rules</dd>
           <dd>You can use the select to quickly enter values.</dd>
           <dd><pre>
@@ -919,7 +937,7 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {<span class="property">color<
 
 
 
-  <h4>defaults</h4>
+  <h4 id="defaults">defaults</h4>
   <p><i>FireMonkey</i> conforms to the Firefox (& Chrome) <a href="https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/manifest.json/content_scripts" target="_blank">content_scripts</a> API defaults. In most cases, it would be sufficient and prevents unnecessary overheads of injecting into sub-frames needlessly. However, Captcha, Disqus, etc are usually included as <code>iframes</code>, therefore, userscript dealing with them should be set to inject into all frames.</p>
 
 
@@ -1615,10 +1633,10 @@ body {
         </td>
         <td>
           <code class="pass">file:///blah/</code><br>
-          <code class="pass">file:///blah/bleh</code>
+          <code class="pass">file:///blah/etc</code>
         </td>
         <td>
-          <code class="fail">file:///bleh/</code>
+          <code class="fail">file:///etc/</code>
         </td>
       </tr>
     </tbody>
@@ -2146,7 +2164,7 @@ body {
 <pre>
 <span class="comment">// loading an external script</span>
 <span class="keyword">const</span> elem = <span class="gm">GM.addElement</span>(<span class="string">'script'</span>, {src: <span class="string">'https://....'</span>});
-elem.<span class="property">onload</span> = () => <span class="property">console</span>.<span class="method">log</span>(elem, <span class="string">'loaded'</span>);
+elem.<span class="property">onload</span> = () =&gt; <span class="property">console</span>.<span class="method">log</span>(elem, <span class="string">'loaded'</span>);
 
 <span class="comment">// appending to shadowRoot</span>
 <span class="keyword">const</span> elem = <span class="gm">GM_addElement</span>(parentElement.<span class="property">shadowRoot</span>, <span class="string">'iframe'</span>, {src: <span class="string">'https://....'</span>});
@@ -2229,7 +2247,7 @@ style.<span class="property">textContent</span> = <span class="string">`... css 
 <pre>
 <span class="comment">// stored value for key OR default</span>
 <span class="keyword">const</span> <span class="property">value</span> = <span class="keyword">await</span> <span class="gm">GM.getValue</span>(key, default);
-<span class="keyword">const</span> <span class="property">value</span> = <span class="gm">GM_getValue</span>(key, default);</span>
+<span class="keyword">const</span> <span class="property">value</span> = <span class="gm">GM_getValue</span>(key, default);
 
 <span class="comment">// an array of keys set by script OR []</span>
 <span class="keyword">const</span> <span class="method">keys</span> = <span class="keyword">await</span> <span class="gm">GM.listValues</span>();
@@ -2274,8 +2292,8 @@ style.<span class="property">textContent</span> = <span class="string">`... css 
 
 <pre>
 <span class="comment">// Response Object</span>
-<span class="keyword">const</span> response = <span class="keyword">await</span> <span class="gm">GM.fetch</span>(url [, init]);</span>
-<span class="keyword">const</span> response = <span class="keyword">await</span> <span class="gm">GM_fetch</span>(url [, init]);</span>
+<span class="keyword">const</span> response = <span class="keyword">await</span> <span class="gm">GM.fetch</span>(url [, init]);
+<span class="keyword">const</span> response = <span class="keyword">await</span> <span class="gm">GM_fetch</span>(url [, init]);
 </pre>
 
   <dl>
@@ -2383,8 +2401,8 @@ style.<span class="property">textContent</span> = <span class="string">`... css 
 
 <pre>
 <span class="comment">// Response Object</span>
-<span class="keyword">await</span> <span class="gm">GM.xmlHttpRequest</span>({url, onload});</span>
-<span class="keyword">await</span> <span class="gm">GM_xmlhttpRequest</span>({url, onload});</span>
+<span class="keyword">await</span> <span class="gm">GM.xmlHttpRequest</span>({url, onload});
+<span class="keyword">await</span> <span class="gm">GM_xmlhttpRequest</span>({url, onload});
 </pre>
 
   <p class="note">All requests are <code>asynchronous</code>, therefore <code>synchronous</code> is not supported.</p>
@@ -2501,7 +2519,7 @@ xhr.send(<span class="keyword">null</span>);
 <span class="object">window</span>.fetch(<span class="string">'https://example.com/'</span>, {
   credentials: 'include'
 })
-.<span class="keyword">then</span>(response => response.json())
+.<span class="keyword">then</span>(response =&gt; response.json())
 .<span class="keyword">catch</span>(<span class="method">error</span> =&gt; <span class="property">console</span>.<span class="method">error</span>(<span class="method">error</span>.message));
 </pre>
 
@@ -2719,7 +2737,7 @@ true/false  <span class="experimental">v2.48</span>
 
 
 <precaption>Example</precaption>
-<pre><code class="deprecated"><span class="comment">// direct method -> error: alert runs immediately</span>
+<pre><code class="deprecated"><span class="comment">// direct method ➜ error: alert runs immediately</span>
 <span class="gm">GM_registerMenuCommand</span>(<span class="string">'Hello, world (direct)'</span>, <span class="method">alert</span>(<span class="string">'Hello, world! (direct)'</span>));</code>
 <span class="comment">// anonymous function</span>
 <span class="gm">GM_registerMenuCommand</span>(<span class="string">'Hello, world (anon)'</span>, <span class="keyword">function</span>() { <span class="method">alert</span>(<span class="string">'Hello, world! (anon)'</span>); });
@@ -2851,7 +2869,7 @@ img.<span class="property">src</span> = <span class="string">'http://www.example
 <span class="gm">GM_addValueChangeListener</span>(<span class="string">'test-key'</span>, <span class="keyword">function</span>(...arg) { <span class="property">console</span>.<span class="method">log</span>(...arg); });
 
 <span class="comment">// anonymous arrow function</span>
-<span class="gm">GM_addValueChangeListener</span>(<span class="string">'test-key'</span>, (key, oldValue, newValue, remote) => { <span class="property">console</span>.<span class="method">log</span>(key, oldValue, newValue, remote); });
+<span class="gm">GM_addValueChangeListener</span>(<span class="string">'test-key'</span>, (key, oldValue, newValue, remote) =&gt; { <span class="property">console</span>.<span class="method">log</span>(key, oldValue, newValue, remote); });
 </pre>
 
 
@@ -3123,7 +3141,7 @@ popup.addStyle(css);
     </tr>
   </thead>
   <tbody>
-    <tr><th>text</span></th><td class="pass"></td><td class="pass"></td><td class="pass"></td><td class="pass"></td></tr>
+    <tr><th>text</th><td class="pass"></td><td class="pass"></td><td class="pass"></td><td class="pass"></td></tr>
     <tr>
       <th>type</th>
       <td class="pass">v2.45<br>
@@ -3421,7 +3439,7 @@ exportFunction(notify, <span class="object">window</span>, {defineAs: 'notify'})
 <pre>
 <span class="comment">// select a simple node that changes in navigation to attach a MutationObserver e.g. &lt;title&gt;
 // For better performance avoid using a node with a lot of children like &lt;body&gt; when childList: true  </span>
-<span class="keyword">new</span> MutationObserver((mutationsList) => {
+<span class="keyword">new</span> MutationObserver((mutationsList) =&gt; {
   <span class="property">console</span>.<span class="method">log</span>(mutationsList[0].target.<span class="property">textContent</span>);
   <span class="comment">// re-run the necessary function</span>
 }).<span class="method">observe</span>(
@@ -3646,7 +3664,6 @@ script.<span class="method">remove</span>();
 ==UserCSS==
 @name           ABC Style
 @match          *://*.example.com/*
-@author         erosman
 @version        1.0
 ==/UserCSS==
 */</span>
@@ -3873,6 +3890,7 @@ ReferenceError: abc is not defined[Learn More]                        1f0135df-f
     <li><a href="https://deepsource.io/blog/javascript-code-quality-best-practices/" target="_blank">JavaScript best practices to improve code quality </a></li>
     <li><a href="https://www.w3schools.com/js/js_best_practices.asp" target="_blank">JavaScript Best Practices</a></li>
     <li><a href="https://www.w3.org/wiki/JavaScript_best_practices" target="_blank">JavaScript best practices</a></li>
+    <li><a href="https://github.com/airbnb/javascript" target="_blank">Airbnb JavaScript Style Guide</a></li>
 
   </ul>
 
